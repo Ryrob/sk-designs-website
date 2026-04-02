@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>S&K Designs | Custom Woodworking & Residential Construction | Eagle Mountain, UT</title>
+<meta name="description" content="S&K Designs is a premier custom woodworking and residential construction company in Eagle Mountain, Utah. Custom built-ins, basement finishing, outdoor structures, and specialized woodworking.">
+<link rel="icon" type="image/png" href="images/favicon.png">
+<link rel="apple-touch-icon" href="images/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --charcoal: #2C2C2C;
+  --dark-wood: #3E2723;
+  --warm-brown: #5D4037;
+  --copper: #B87333;
+  --gold: #C9A96E;
+  --cream: #FAF7F2;
+  --light-gray: #F0ECE6;
+  --white: #FFFFFF;
+  --text: #333333;
+  --text-light: #777777;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Raleway', sans-serif;
+  color: var(--text);
+  background: var(--cream);
+  line-height: 1.7;
+}
+
+/* ===== NAVIGATION ===== */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: linear-gradient(135deg, #1a1a1a 0%, #232323 40%, #1e1e1e 70%, #161616 100%);
+  backdrop-filter: blur(10px);
+  padding: 0 40px;
+  display: flex; justify-content: space-between; align-items: center;
+  height: 80px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.35);
+}
+
+.nav-logo {
+  display: flex; align-items: center; gap: 14px;
+  text-decoration: none; color: var(--cream);
+}
+
+.nav-logo img { width: 68px; height: 68px; object-fit: contain; border-radius: 6px; }
+
+.nav-logo-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem; font-weight: 700; letter-spacing: 1px;
+}
+
+.nav-logo-text span { color: var(--gold); }
+
+.nav-links { display: flex; gap: 32px; list-style: none; }
+
+.nav-links a {
+  color: var(--cream); text-decoration: none;
+  font-size: 0.85rem; font-weight: 500;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  transition: color 0.3s;
+  position: relative;
+}
+
+.nav-links a::after {
+  content: ''; position: absolute; bottom: -4px; left: 0;
+  width: 0; height: 2px; background: var(--gold);
+  transition: width 0.3s;
+}
+
+.nav-links a:hover { color: var(--gold); }
+.nav-links a:hover::after { width: 100%; }
+
+.nav-toggle { display: none; cursor: pointer; background: none; border: none; padding: 8px; }
+.nav-toggle span { display: block; width: 24px; height: 2px; background: var(--cream); margin: 6px 0; transition: 0.3s; }
+
+/* ===== HERO ===== */
+.hero {
+  margin-top: 80px;
+  height: calc(100vh - 80px);
+  min-height: 600px;
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute; inset: 0;
+  background: url('images/builtin-fireplace-1.png') center/cover;
+}
+
+.hero-bg::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(44,44,44,0.85) 0%,
+    rgba(62,39,35,0.75) 50%,
+    rgba(44,44,44,0.80) 100%
+  );
+}
+
+.hero-content {
+  position: relative; z-index: 2;
+  max-width: 800px; padding: 0 24px;
+}
+
+.hero-badge {
+  display: inline-block;
+  padding: 8px 24px; margin-bottom: 24px;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-size: 0.75rem; font-weight: 600;
+  letter-spacing: 3px; text-transform: uppercase;
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  color: var(--white);
+  line-height: 1.15;
+  margin-bottom: 20px;
+}
+
+.hero h1 span { color: var(--gold); }
+
+.hero p {
+  color: rgba(255,255,255,0.85);
+  font-size: 1.15rem; font-weight: 300;
+  max-width: 600px; margin: 0 auto 36px;
+  line-height: 1.8;
+}
+
+.btn {
+  display: inline-block; padding: 16px 40px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.8rem; font-weight: 600;
+  letter-spacing: 2px; text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.3s;
+  cursor: pointer; border: none;
+}
+
+.btn-primary {
+  background: var(--gold); color: var(--charcoal);
+}
+
+.btn-primary:hover {
+  background: var(--copper); color: var(--white);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(184, 115, 51, 0.35);
+}
+
+.btn-outline {
+  background: transparent; color: var(--white);
+  border: 1px solid var(--gold);
+  margin-left: 16px;
+}
+
+.btn-outline:hover {
+  background: var(--gold); color: var(--charcoal);
+}
+
+/* ===== SECTIONS ===== */
+section { padding: 100px 40px; }
+
+.section-header {
+  text-align: center; max-width: 700px;
+  margin: 0 auto 64px;
+}
+
+.section-label {
+  color: var(--copper);
+  font-size: 0.75rem; font-weight: 600;
+  letter-spacing: 3px; text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  color: var(--charcoal);
+  margin-bottom: 16px;
+}
+
+.section-subtitle {
+  color: var(--text-light);
+  font-size: 1.05rem; font-weight: 300;
+  line-height: 1.8;
+}
+
+.divider {
+  width: 60px; height: 2px;
+  background: var(--gold);
+  margin: 20px auto;
+}
+
+/* ===== ABOUT ===== */
+#about { background: var(--white); }
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px; max-width: 1200px; margin: 0 auto;
+  align-items: center;
+}
+
+.about-image {
+  position: relative;
+  border-radius: 4px; overflow: hidden;
+}
+
+.about-image img {
+  width: 100%; height: 500px;
+  object-fit: cover; display: block;
+}
+
+.about-image::after {
+  content: ''; position: absolute;
+  top: 20px; left: 20px; right: -20px; bottom: -20px;
+  border: 2px solid var(--gold);
+  z-index: -1;
+}
+
+.about-text h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem; color: var(--charcoal);
+  margin-bottom: 8px;
+}
+
+.about-text .gold-line {
+  width: 60px; height: 2px;
+  background: var(--gold); margin: 16px 0 24px;
+}
+
+.about-text p {
+  color: var(--text-light); font-weight: 300;
+  margin-bottom: 16px; line-height: 1.9;
+}
+
+.about-stats {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 24px; margin-top: 36px;
+  padding-top: 36px;
+  border-top: 1px solid var(--light-gray);
+}
+
+.stat { text-align: center; }
+
+.stat-number {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem; color: var(--copper);
+  font-weight: 700;
+}
+
+.stat-label {
+  font-size: 0.75rem; color: var(--text-light);
+  text-transform: uppercase; letter-spacing: 1px;
+  margin-top: 4px;
+}
+
+/* ===== SERVICES ===== */
+#services { background: var(--cream); }
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 32px; max-width: 1200px; margin: 0 auto;
+}
+
+.service-card {
+  background: var(--white);
+  padding: 40px 32px;
+  border-radius: 4px;
+  transition: all 0.4s;
+  position: relative;
+  overflow: hidden;
+}
+
+.service-card::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 3px;
+  background: var(--gold);
+  transform: scaleX(0); transition: transform 0.4s;
+}
+
+.service-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+}
+
+.service-card:hover::before { transform: scaleX(1); }
+
+.service-icon {
+  width: 56px; height: 56px;
+  background: var(--cream);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 24px;
+}
+
+.service-icon svg { width: 28px; height: 28px; stroke: var(--copper); fill: none; stroke-width: 1.5; }
+
+.service-card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem; color: var(--charcoal);
+  margin-bottom: 12px;
+}
+
+.service-card p {
+  color: var(--text-light); font-weight: 300;
+  font-size: 0.95rem; line-height: 1.8;
+}
+
+/* ===== PORTFOLIO ===== */
+#portfolio { background: var(--white); }
+
+.portfolio-filters {
+  display: flex; justify-content: center;
+  gap: 8px; flex-wrap: wrap;
+  margin-bottom: 48px;
+}
+
+.filter-btn {
+  padding: 10px 24px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.8rem; font-weight: 500;
+  letter-spacing: 1px; text-transform: uppercase;
+  background: transparent; color: var(--text-light);
+  border: 1px solid var(--light-gray);
+  cursor: pointer; transition: all 0.3s;
+}
+
+.filter-btn.active, .filter-btn:hover {
+  background: var(--charcoal); color: var(--cream);
+  border-color: var(--charcoal);
+}
+
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 20px; max-width: 1200px; margin: 0 auto;
+}
+
+.portfolio-item {
+  position: relative; overflow: hidden;
+  border-radius: 4px;
+  aspect-ratio: 4/3;
+  cursor: pointer;
+}
+
+.portfolio-item img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+  transition: transform 0.6s;
+}
+
+.portfolio-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(44,44,44,0.9) 0%, transparent 60%);
+  display: flex; flex-direction: column;
+  justify-content: flex-end;
+  padding: 28px;
+  opacity: 0; transition: opacity 0.4s;
+}
+
+.portfolio-item:hover img { transform: scale(1.06); }
+.portfolio-item:hover .portfolio-overlay { opacity: 1; }
+
+.portfolio-overlay h3 {
+  font-family: 'Playfair Display', serif;
+  color: var(--white); font-size: 1.2rem;
+  margin-bottom: 4px;
+}
+
+.portfolio-overlay p {
+  color: var(--gold);
+  font-size: 0.8rem; letter-spacing: 1px;
+  text-transform: uppercase; font-weight: 500;
+}
+
+/* ===== PROCESS ===== */
+#process { background: var(--charcoal); color: var(--cream); }
+#process .section-label { color: var(--gold); }
+#process .section-title { color: var(--cream); }
+#process .section-subtitle { color: rgba(255,255,255,0.6); }
+
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 48px; max-width: 1100px; margin: 0 auto;
+  position: relative;
+}
+
+.process-grid::before {
+  content: ''; position: absolute;
+  top: 40px; left: 12.5%; right: 12.5%;
+  height: 1px; background: var(--gold);
+  opacity: 0.3;
+}
+
+.process-step { text-align: center; position: relative; }
+
+.step-number {
+  width: 80px; height: 80px; margin: 0 auto 24px;
+  border: 2px solid var(--gold); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem; color: var(--gold);
+  background: var(--charcoal); position: relative; z-index: 2;
+}
+
+.process-step h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem; margin-bottom: 8px;
+}
+
+.process-step p {
+  color: rgba(255,255,255,0.55);
+  font-size: 0.9rem; font-weight: 300;
+  line-height: 1.7;
+}
+
+/* ===== TESTIMONIAL ===== */
+#testimonial { background: var(--light-gray); text-align: center; padding: 80px 40px; }
+
+.testimonial-content {
+  max-width: 750px; margin: 0 auto;
+}
+
+.quote-mark {
+  font-family: 'Playfair Display', serif;
+  font-size: 5rem; color: var(--gold);
+  line-height: 1; margin-bottom: -20px;
+}
+
+.testimonial-content blockquote {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem; font-style: italic;
+  color: var(--charcoal); line-height: 1.8;
+  margin-bottom: 24px;
+}
+
+.testimonial-author {
+  color: var(--text-light);
+  font-size: 0.9rem; font-weight: 500;
+}
+
+.testimonial-author span { color: var(--copper); }
+
+/* ===== CONTACT ===== */
+#contact { background: var(--white); }
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 80px; max-width: 1100px; margin: 0 auto;
+}
+
+.contact-info h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem; color: var(--charcoal);
+  margin-bottom: 8px;
+}
+
+.contact-info .gold-line {
+  width: 60px; height: 2px;
+  background: var(--gold); margin: 16px 0 24px;
+}
+
+.contact-info p {
+  color: var(--text-light); font-weight: 300;
+  line-height: 1.9; margin-bottom: 36px;
+}
+
+.contact-detail {
+  display: flex; align-items: flex-start; gap: 16px;
+  margin-bottom: 24px;
+}
+
+.contact-detail svg {
+  width: 20px; height: 20px; stroke: var(--copper);
+  fill: none; stroke-width: 1.5; flex-shrink: 0; margin-top: 2px;
+}
+
+.contact-detail strong {
+  display: block; font-size: 0.8rem;
+  text-transform: uppercase; letter-spacing: 1px;
+  color: var(--charcoal); margin-bottom: 2px;
+}
+
+.contact-detail span {
+  color: var(--text-light); font-weight: 300;
+  font-size: 0.95rem;
+}
+
+.contact-form { display: flex; flex-direction: column; gap: 20px; }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+.contact-form input, .contact-form textarea, .contact-form select {
+  width: 100%; padding: 16px 20px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.9rem; color: var(--text);
+  border: 1px solid #ddd; background: var(--cream);
+  outline: none; transition: border-color 0.3s;
+}
+
+.contact-form input:focus, .contact-form textarea:focus, .contact-form select:focus {
+  border-color: var(--gold);
+}
+
+.contact-form textarea { height: 150px; resize: vertical; }
+
+/* ===== FOOTER ===== */
+footer {
+  background: linear-gradient(135deg, #1a1a1a 0%, #232323 40%, #1e1e1e 70%, #161616 100%);
+  color: rgba(255,255,255,0.5);
+  padding: 60px 40px 30px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 60px; max-width: 1100px; margin: 0 auto;
+  padding-bottom: 40px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.footer-brand .nav-logo { margin-bottom: 16px; }
+
+.footer-brand p {
+  font-size: 0.9rem; line-height: 1.8; font-weight: 300;
+  max-width: 360px;
+}
+
+footer h4 {
+  color: var(--cream); font-size: 0.8rem;
+  letter-spacing: 2px; text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+footer ul { list-style: none; }
+footer ul li { margin-bottom: 10px; }
+
+footer ul a {
+  color: rgba(255,255,255,0.5);
+  text-decoration: none; font-size: 0.9rem;
+  font-weight: 300; transition: color 0.3s;
+}
+
+footer ul a:hover { color: var(--gold); }
+
+.footer-bottom {
+  max-width: 1100px; margin: 0 auto;
+  padding-top: 24px;
+  display: flex; justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem; font-weight: 300;
+}
+
+/* ===== MODAL (Lightbox) ===== */
+.modal-overlay {
+  display: none; position: fixed; inset: 0; z-index: 9999;
+  background: rgba(0,0,0,0.92);
+  align-items: center; justify-content: center;
+  padding: 40px;
+}
+
+.modal-overlay.active { display: flex; }
+
+.modal-overlay img {
+  max-width: 90%; max-height: 85vh;
+  object-fit: contain; border-radius: 4px;
+}
+
+.modal-close {
+  position: absolute; top: 24px; right: 32px;
+  color: white; font-size: 2rem; cursor: pointer;
+  background: none; border: none; font-weight: 300;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .nav-links { display: none; }
+  .nav-toggle { display: block; }
+  .about-grid { grid-template-columns: 1fr; gap: 40px; }
+  .about-image { order: -1; }
+  .about-image img { height: 350px; }
+  .process-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+  .process-grid::before { display: none; }
+  .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+  .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+  .portfolio-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+}
+
+@media (max-width: 600px) {
+  section { padding: 60px 20px; }
+  nav { padding: 0 20px; }
+  .hero-content { padding: 0 16px; }
+  .btn { padding: 14px 28px; }
+  .btn-outline { margin-left: 0; margin-top: 12px; }
+  .form-row { grid-template-columns: 1fr; }
+  .process-grid { grid-template-columns: 1fr; }
+  .about-stats { grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav>
+  <a href="#" class="nav-logo">
+    <img src="images/logo-nav.png" alt="S&K Designs Logo">
+    <div class="nav-logo-text">S<span>&</span>K Designs</div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#portfolio">Portfolio</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('show')" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Eagle Mountain, Utah</div>
+    <h1>Crafting Spaces <span>That Last</span> a Lifetime</h1>
+    <p>Premier custom woodworking and residential construction. From precision-crafted built-ins to complete basement finishes and outdoor timber structures.</p>
+    <a href="#portfolio" class="btn btn-primary">View Our Work</a>
+    <a href="#contact" class="btn btn-outline">Get a Quote</a>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-image">
+      <img src="images/custom-kitchen.jpg" alt="Custom kitchen cabinetry by S&K Designs" loading="lazy">
+    </div>
+    <div class="about-text">
+      <div class="section-label">About Us</div>
+      <h2>Where High-End Design Meets Structural Excellence</h2>
+      <div class="gold-line"></div>
+      <p>S&K Designs is a locally owned, family-operated business dedicated to providing Utah homeowners with reliable, professional service and superior results.</p>
+      <p>We specialize in bridging the gap between high-end design and structural excellence. We apply the same level of precision to framing, electrical, and basement finishing that we do to custom cabinetry.</p>
+      <p>From the first sketch to the final coat of finish, S&K Designs is committed to building spaces that last a lifetime.</p>
+      <div class="about-stats">
+        <div class="stat">
+          <div class="stat-number">100+</div>
+          <div class="stat-label">Projects</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">5+</div>
+          <div class="stat-label">Years</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">100%</div>
+          <div class="stat-label">Satisfaction</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-header">
+    <div class="section-label">What We Do</div>
+    <h2 class="section-title">Our Services</h2>
+    <div class="divider"></div>
+    <p class="section-subtitle">From intricate woodworking details to full-scale construction, we deliver craftsmanship at every level.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+      </div>
+      <h3>Custom Built-Ins</h3>
+      <p>Handcrafted cabinetry, entertainment centers, and media walls tailored precisely to your space. Every detail is designed for both beauty and function.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/><line x1="9" y1="10" x2="9" y2="10.01"/><line x1="15" y1="10" x2="15" y2="10.01"/></svg>
+      </div>
+      <h3>Basement Finishing</h3>
+      <p>Turn-key basement transformations including framing, electrical, and high-volume drywall with a focus on structural integrity and fire safety.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><path d="M3 21h18M4 21V10l2-2h12l2 2v11"/><line x1="4" y1="7" x2="20" y2="7"/><line x1="6" y1="4" x2="18" y2="4"/><line x1="9" y1="21" x2="9" y2="14"/><line x1="15" y1="21" x2="15" y2="14"/></svg>
+      </div>
+      <h3>Outdoor Structures</h3>
+      <p>Expertly designed and built pergolas, timber frames, garden structures, and outdoor living spaces that extend your home into the outdoors.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">
+        <svg viewBox="0 0 24 24"><polygon points="12,2 15,9 22,9 16.5,13.5 18.5,21 12,16.5 5.5,21 7.5,13.5 2,9 9,9"/></svg>
+      </div>
+      <h3>Specialized Woodworking</h3>
+      <p>Unique geometric accent walls, custom wood features, handcrafted furniture, and one-of-a-kind pieces that serve as the focal point of any room.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="portfolio">
+  <div class="section-header">
+    <div class="section-label">Our Work</div>
+    <h2 class="section-title">Project Portfolio</h2>
+    <div class="divider"></div>
+    <p class="section-subtitle">Browse through our recent projects and see the quality and care we bring to every build.</p>
+  </div>
+
+  <div class="portfolio-grid">
+    <div class="portfolio-item" onclick="openModal(this)">
+      <img src="images/builtin-fireplace-1.png" alt="Custom built-in entertainment center with shiplap fireplace" loading="lazy">
+      <div class="portfolio-overlay">
+        <h3>Shiplap Fireplace & Built-Ins</h3>
+        <p>Custom Built-Ins</p>
+      </div>
+    </div>
+    <div class="portfolio-item" onclick="openModal(this)">
+      <img src="images/builtin-fireplace-2.png" alt="White built-in shelving with fireplace surround" loading="lazy">
+      <div class="portfolio-overlay">
+        <h3>Fireplace Surround & Shelving</h3>
+        <p>Custom Built-Ins</p>
+      </div>
+    </div>
+    <div class="portfolio-item" onclick="openModal(this)">
+      <img src="images/modern-fireplace.png" alt="Modern venetian plaster fireplace wall" loading="lazy">
+      <div class="portfolio-overlay">
+        <h3>Modern Feature Fireplace</h3>
+        <p>Specialized Woodworking</p>
+      </div>
+    </div>
+    <div class="portfolio-item" onclick="openModal(this)">
+      <img src="images/builtin-entertainment.png" alt="Built-in entertainment center with wood countertops" loading="lazy">
+      <div class="portfolio-overlay">
+        <h3>Entertainment Center</h3>
+        <p>Custom Built-Ins</p>
+      </div>
+    </div>
+    <div class="portfolio-item" onclick="openModal(this)">
+      <img src="images/cozy-builtin.jpg" alt="Cozy living room built-in with shiplap and LED lighting" loading="lazy">
+      <div class="portfolio-overlay">
+        <h3>LED-Lit Built-In Wall</h3>
+        <p>Custom Built-Ins</p>
+      </div>
+    </div>
+    <div class="portfolio-item" onclick="openModal(this)">
+      <img src="images/fireplace-shelves.jpg" alt="Built-in shelving flanking fireplace" loading="lazy">
+      <div class="portfolio-overlay">
+        <h3>Classic Fireplace Built-Ins</h3>
+        <p>Custom Built-Ins</p>
+      </div>
+    </div>
+    <div class="portfolio-item" onclick="openModal(this)">
+      <img src="images/custom-kitchen.jpg" alt="Custom kitchen with white cabinetry and brick backsplash" loading="lazy">
+      <div class="portfolio-overlay">
+        <h3>Custom Kitchen Cabinetry</h3>
+        <p>Custom Built-Ins</p>
+      </div>
+    </div>
+    <div class="portfolio-item" onclick="openModal(this)">
+      <img src="images/walkin-closet.png" alt="Custom walk-in closet with built-in drawers and lighting" loading="lazy">
+      <div class="portfolio-overlay">
+        <h3>Walk-In Closet System</h3>
+        <p>Custom Built-Ins</p>
+      </div>
+    </div>
+    <div class="portfolio-item" onclick="openModal(this)">
+      <img src="images/wainscoting.png" alt="Board and batten wainscoting trim work" loading="lazy">
+      <div class="portfolio-overlay">
+        <h3>Board & Batten Wainscoting</h3>
+        <p>Specialized Woodworking</p>
+      </div>
+    </div>
+    <div class="portfolio-item" onclick="openModal(this)">
+      <img src="images/pergola-1.jpg" alt="Custom timber pergola with mountain views" loading="lazy">
+      <div class="portfolio-overlay">
+        <h3>Timber Pergola</h3>
+        <p>Outdoor Structures</p>
+      </div>
+    </div>
+    <div class="portfolio-item" onclick="openModal(this)">
+      <img src="images/chicken-coop.png" alt="Custom designed and built chicken coop" loading="lazy">
+      <div class="portfolio-overlay">
+        <h3>Custom Chicken Coop</h3>
+        <p>Outdoor Structures</p>
+      </div>
+    </div>
+    <div class="portfolio-item" onclick="openModal(this)">
+      <img src="images/garden-beds.jpg" alt="Raised garden beds with corrugated metal and timber" loading="lazy">
+      <div class="portfolio-overlay">
+        <h3>Raised Garden Beds</h3>
+        <p>Outdoor Structures</p>
+      </div>
+    </div>
+    <div class="portfolio-item" onclick="openModal(this)">
+      <img src="images/dining-table.jpg" alt="Handcrafted dining table with mountain views" loading="lazy">
+      <div class="portfolio-overlay">
+        <h3>Farmhouse Dining Table</h3>
+        <p>Specialized Woodworking</p>
+      </div>
+    </div>
+    <div class="portfolio-item" onclick="openModal(this)">
+      <img src="images/custom-table.jpg" alt="Custom wood dining table with bench" loading="lazy">
+      <div class="portfolio-overlay">
+        <h3>Modern Dining Set</h3>
+        <p>Specialized Woodworking</p>
+      </div>
+    </div>
+    <div class="portfolio-item" onclick="openModal(this)">
+      <img src="images/garage-org.png" alt="Custom garage organization system" loading="lazy">
+      <div class="portfolio-overlay">
+        <h3>Garage Organization</h3>
+        <p>Custom Built-Ins</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="section-header">
+    <div class="section-label">How We Work</div>
+    <h2 class="section-title">Our Process</h2>
+    <div class="divider"></div>
+    <p class="section-subtitle">From concept to completion, we keep you involved at every step.</p>
+  </div>
+  <div class="process-grid">
+    <div class="process-step">
+      <div class="step-number">1</div>
+      <h3>Consultation</h3>
+      <p>We meet to discuss your vision, take measurements, and understand exactly what you need.</p>
+    </div>
+    <div class="process-step">
+      <div class="step-number">2</div>
+      <h3>Design</h3>
+      <p>Our team creates detailed plans and sketches so you can see your project before we start building.</p>
+    </div>
+    <div class="process-step">
+      <div class="step-number">3</div>
+      <h3>Build</h3>
+      <p>Expert craftsmen bring your project to life with precision, quality materials, and attention to detail.</p>
+    </div>
+    <div class="process-step">
+      <div class="step-number">4</div>
+      <h3>Deliver</h3>
+      <p>We finish with a thorough walkthrough to ensure every detail meets your expectations.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIAL -->
+<section id="testimonial">
+  <div class="testimonial-content">
+    <div class="quote-mark">"</div>
+    <blockquote>S&K Designs transformed our basement into the family space we always dreamed of. The built-ins around our fireplace are absolutely stunning and the attention to detail is unlike anything we've seen.</blockquote>
+    <div class="testimonial-author">Happy Homeowner &mdash; <span>Eagle Mountain, UT</span></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-grid">
+    <div class="contact-info">
+      <div class="section-label">Get in Touch</div>
+      <h2>Let's Build Something Beautiful</h2>
+      <div class="gold-line"></div>
+      <p>Ready to start your next project? Contact us for a free consultation. We'd love to hear about your vision and show you what's possible.</p>
+      <div class="contact-detail">
+        <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+        <div>
+          <strong>Phone</strong>
+          <span>(801) 555-0123</span>
+        </div>
+      </div>
+      <div class="contact-detail">
+        <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <div>
+          <strong>Email</strong>
+          <span>info@skdesignsut.com</span>
+        </div>
+      </div>
+      <div class="contact-detail">
+        <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <div>
+          <strong>Service Area</strong>
+          <span>Eagle Mountain & Utah County, UT</span>
+        </div>
+      </div>
+    </div>
+    <form class="contact-form" onsubmit="event.preventDefault(); alert('Thank you! We will be in touch shortly.');">
+      <div class="form-row">
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Your Email" required>
+      </div>
+      <input type="tel" placeholder="Phone Number">
+      <select>
+        <option value="">Select a Service</option>
+        <option>Custom Built-Ins</option>
+        <option>Basement Finishing</option>
+        <option>Outdoor Structures</option>
+        <option>Specialized Woodworking</option>
+        <option>Other</option>
+      </select>
+      <textarea placeholder="Tell us about your project..."></textarea>
+      <button type="submit" class="btn btn-primary" style="align-self:flex-start;">Send Message</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo">
+        <img src="images/logo-medium.png" alt="S&K Designs Logo" style="width:60px;height:60px;border-radius:6px;">
+        <div class="nav-logo-text" style="font-size:1.2rem;">S<span>&</span>K Designs</div>
+      </a>
+      <p>Premier custom woodworking and residential construction serving Eagle Mountain and the surrounding Utah County area.</p>
+    </div>
+    <div>
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#services">Custom Built-Ins</a></li>
+        <li><a href="#services">Basement Finishing</a></li>
+        <li><a href="#services">Outdoor Structures</a></li>
+        <li><a href="#services">Specialized Woodworking</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#process">Our Process</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 S&K Designs. All rights reserved.</span>
+    <span>Eagle Mountain, Utah</span>
+  </div>
+</footer>
+
+<!-- Lightbox Modal -->
+<div class="modal-overlay" id="lightbox" onclick="closeModal()">
+  <button class="modal-close" onclick="closeModal()">&times;</button>
+  <img id="lightbox-img" src="" alt="Project detail">
+</div>
+
+<script>
+function openModal(el) {
+  const img = el.querySelector('img');
+  document.getElementById('lightbox-img').src = img.src;
+  document.getElementById('lightbox-img').alt = img.alt;
+  document.getElementById('lightbox').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('lightbox').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeModal();
+});
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.service-card, .portfolio-item, .process-step').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+  observer.observe(el);
+});
+</script>
+
+</body>
+</html>
