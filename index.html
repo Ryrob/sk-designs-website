@@ -590,6 +590,13 @@ footer ul a:hover { color: var(--gold); }
 /* ===== RESPONSIVE ===== */
 @media (max-width: 900px) {
   .nav-links { display: none; }
+  .nav-links.show {
+    display: flex; flex-direction: column;
+    position: absolute; top: 80px; left: 0; right: 0;
+    background: linear-gradient(135deg, #1a1a1a 0%, #232323 100%);
+    padding: 24px 40px; gap: 20px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
   .nav-toggle { display: block; }
   .about-grid { grid-template-columns: 1fr; gap: 40px; }
   .about-image { order: -1; }
@@ -627,6 +634,7 @@ footer ul a:hover { color: var(--gold); }
     <li><a href="#services">Services</a></li>
     <li><a href="#portfolio">Portfolio</a></li>
     <li><a href="#process">Process</a></li>
+    <li><a href="grant-finder.html">Grant Finder</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
   <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('show')" aria-label="Menu">
@@ -951,7 +959,7 @@ footer ul a:hover { color: var(--gold); }
       <ul>
         <li><a href="#about">About Us</a></li>
         <li><a href="#portfolio">Portfolio</a></li>
-        <li><a href="#process">Our Process</a></li>
+        <li><a href="grant-finder.html">Grant Finder</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
     </div>

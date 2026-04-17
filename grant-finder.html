@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Accessibility Home Modification Grant Finder | S&K Designs</title>
+<meta name="description" content="Find grants and programs to help fund mobility and accessibility home modifications. Search federal, state, veteran, and nonprofit programs.">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --charcoal: #2C2C2C;
+  --dark-wood: #3E2723;
+  --warm-brown: #5D4037;
+  --copper: #B87333;
+  --gold: #C9A96E;
+  --cream: #FAF7F2;
+  --light-gray: #F0ECE6;
+  --white: #FFFFFF;
+  --text: #333333;
+  --text-light: #777777;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Raleway', sans-serif;
+  color: var(--text);
+  background: var(--cream);
+  line-height: 1.7;
+}
+
+/* ===== NAVIGATION (matches index.html) ===== */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: linear-gradient(135deg, #1a1a1a 0%, #232323 40%, #1e1e1e 70%, #161616 100%);
+  backdrop-filter: blur(10px);
+  padding: 0 40px;
+  display: flex; justify-content: space-between; align-items: center;
+  height: 80px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.35);
+}
+
+.nav-logo {
+  display: flex; align-items: center; gap: 14px;
+  text-decoration: none; color: var(--cream);
+}
+
+.nav-logo img { width: 68px; height: 68px; object-fit: contain; border-radius: 6px; }
+
+.nav-logo-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem; font-weight: 700; letter-spacing: 1px;
+}
+
+.nav-logo-text span { color: var(--gold); }
+
+.nav-links { display: flex; gap: 32px; list-style: none; }
+
+.nav-links a {
+  color: var(--cream); text-decoration: none;
+  font-size: 0.85rem; font-weight: 500;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  transition: color 0.3s;
+  position: relative;
+}
+
+.nav-links a::after {
+  content: ''; position: absolute; bottom: -4px; left: 0;
+  width: 0; height: 2px; background: var(--gold);
+  transition: width 0.3s;
+}
+
+.nav-links a:hover { color: var(--gold); }
+.nav-links a:hover::after { width: 100%; }
+.nav-links a.active { color: var(--gold); }
+.nav-links a.active::after { width: 100%; }
+
+.nav-toggle { display: none; cursor: pointer; background: none; border: none; padding: 8px; }
+.nav-toggle span { display: block; width: 24px; height: 2px; background: var(--cream); margin: 6px 0; transition: 0.3s; }
+
+/* ===== PAGE HEADER ===== */
+.page-header {
+  margin-top: 80px;
+  padding: 60px 24px;
+  text-align: center;
+  background: linear-gradient(135deg, var(--charcoal) 0%, var(--dark-wood) 50%, var(--charcoal) 100%);
+  color: var(--white);
+}
+
+.page-header .badge {
+  display: inline-block;
+  padding: 8px 24px; margin-bottom: 20px;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-size: 0.75rem; font-weight: 600;
+  letter-spacing: 3px; text-transform: uppercase;
+}
+
+.page-header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+
+.page-header h1 em {
+  color: var(--gold);
+  font-style: normal;
+}
+
+.page-header p {
+  color: rgba(255,255,255,0.8);
+  font-size: 1.05rem; font-weight: 300;
+  max-width: 600px; margin: 0 auto;
+  line-height: 1.8;
+}
+
+/* ===== MAIN CONTAINER ===== */
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 2rem 1rem 4rem;
+}
+
+/* ===== PROGRESS BAR ===== */
+.progress-bar {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+.progress-step {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--text-light);
+  opacity: 0.45;
+  transition: opacity 0.3s;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.progress-step.active { opacity: 1; color: var(--dark-wood); font-weight: 600; }
+.progress-step.done { opacity: 1; color: var(--copper); }
+.progress-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--light-gray); border: 2px solid var(--light-gray);
+  transition: all 0.3s;
+}
+.progress-step.active .progress-dot { background: var(--gold); border-color: var(--gold); }
+.progress-step.done .progress-dot { background: var(--copper); border-color: var(--copper); }
+
+/* ===== STEP CARDS ===== */
+.step-card {
+  background: var(--white);
+  border-radius: 12px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+  padding: 2.2rem;
+  display: none;
+  animation: fadeIn 0.35s ease;
+}
+.step-card.visible { display: block; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.step-card h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  margin-bottom: 0.3rem;
+  color: var(--dark-wood);
+}
+.step-card .subtitle {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-bottom: 1.5rem;
+  font-weight: 300;
+}
+
+/* ===== FORM ELEMENTS ===== */
+label.field-label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  font-size: 0.92rem;
+  color: var(--charcoal);
+}
+
+select, input[type="number"] {
+  width: 100%;
+  padding: 0.7rem 0.9rem;
+  border: 2px solid var(--light-gray);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: 'Raleway', sans-serif;
+  background: var(--white);
+  color: var(--text);
+  transition: border-color 0.2s;
+  appearance: none;
+  -webkit-appearance: none;
+}
+select {
+  background: var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23777777' stroke-width='2' fill='none'/%3E%3C/svg%3E") no-repeat right 12px center;
+  padding-right: 2.5rem;
+}
+select:focus, input:focus {
+  border-color: var(--gold);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(201,169,110,0.15);
+}
+
+.field-group { margin-bottom: 1.3rem; }
+
+/* ===== CHECKBOX / RADIO GROUP ===== */
+.checkbox-group { display: flex; flex-direction: column; gap: 0.6rem; }
+.checkbox-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  padding: 0.8rem 1rem;
+  border: 2px solid var(--light-gray);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+.checkbox-item:hover { border-color: var(--gold); background: rgba(201,169,110,0.03); }
+.checkbox-item.selected { border-color: var(--gold); background: rgba(201,169,110,0.06); }
+.checkbox-item input[type="checkbox"],
+.checkbox-item input[type="radio"] {
+  margin-top: 3px;
+  accent-color: var(--warm-brown);
+  width: 18px; height: 18px;
+  flex-shrink: 0;
+}
+.checkbox-item .cb-label { font-weight: 600; font-size: 0.95rem; color: var(--charcoal); }
+.checkbox-item .cb-desc { font-size: 0.85rem; color: var(--text-light); margin-top: 2px; font-weight: 300; }
+
+/* ===== BUTTONS ===== */
+.btn-row { display: flex; gap: 0.8rem; margin-top: 1.8rem; flex-wrap: wrap; }
+.btn {
+  padding: 0.75rem 1.8rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: 'Raleway', sans-serif;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.btn:active { transform: scale(0.97); }
+.btn-primary {
+  background: var(--gold);
+  color: var(--white);
+}
+.btn-primary:hover { background: var(--copper); }
+.btn-primary:disabled { background: #bdc3c7; cursor: not-allowed; }
+.btn-secondary {
+  background: transparent;
+  color: var(--dark-wood);
+  border: 2px solid var(--dark-wood);
+}
+.btn-secondary:hover { background: rgba(62,39,35,0.05); }
+.btn-restart {
+  background: transparent;
+  color: var(--text-light);
+  border: 2px solid var(--light-gray);
+}
+.btn-restart:hover { background: rgba(0,0,0,0.03); }
+
+/* ===== RESULTS ===== */
+.results-summary {
+  background: linear-gradient(135deg, rgba(201,169,110,0.08), rgba(184,115,51,0.06));
+  border-radius: 10px;
+  padding: 1.2rem 1.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+  border-left: 4px solid var(--gold);
+}
+.results-summary strong { color: var(--dark-wood); }
+
+.grant-card {
+  background: var(--white);
+  border: 1px solid var(--light-gray);
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  transition: box-shadow 0.3s;
+}
+.grant-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+
+.grant-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; }
+.grant-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem; font-weight: 700; color: var(--dark-wood);
+}
+.grant-amount {
+  background: rgba(201,169,110,0.12);
+  color: var(--copper);
+  font-weight: 700;
+  padding: 0.3rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.88rem;
+  white-space: nowrap;
+}
+
+.grant-tags { display: flex; gap: 0.4rem; margin: 0.6rem 0; flex-wrap: wrap; }
+.tag {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  color: var(--white);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.tag-federal { background: var(--warm-brown); }
+.tag-state { background: var(--copper); }
+.tag-veteran { background: #5D7B3E; }
+.tag-nonprofit { background: #8B6914; }
+.tag-lowIncome { background: #557B83; }
+
+.grant-desc { font-size: 0.92rem; color: var(--text-light); margin: 0.8rem 0; font-weight: 300; line-height: 1.7; }
+
+.grant-details { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin: 0.8rem 0; font-size: 0.88rem; }
+.grant-detail-item { display: flex; gap: 0.4rem; }
+.grant-detail-item .label { font-weight: 600; color: var(--charcoal); white-space: nowrap; }
+.grant-detail-item .value { color: var(--text-light); font-weight: 300; }
+
+.grant-link {
+  display: inline-block;
+  margin-top: 0.6rem;
+  color: var(--copper);
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.9rem;
+  letter-spacing: 0.3px;
+  transition: color 0.3s;
+}
+.grant-link:hover { color: var(--gold); text-decoration: underline; }
+
+.no-results {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--text-light);
+}
+.no-results h3 { color: var(--charcoal); margin-bottom: 0.5rem; font-family: 'Playfair Display', serif; }
+
+.disclaimer {
+  background: rgba(201,169,110,0.08);
+  border: 1px solid rgba(201,169,110,0.2);
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  font-size: 0.85rem;
+  color: var(--warm-brown);
+  margin-top: 1.5rem;
+  line-height: 1.6;
+  font-weight: 300;
+}
+
+/* ===== FOOTER (matches index.html) ===== */
+footer {
+  background: linear-gradient(135deg, #1a1a1a 0%, #232323 40%, #1e1e1e 70%, #161616 100%);
+  color: rgba(255,255,255,0.5);
+  padding: 60px 40px 30px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 60px; max-width: 1100px; margin: 0 auto;
+  padding-bottom: 40px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.footer-brand .nav-logo { margin-bottom: 16px; }
+
+.footer-brand p {
+  font-size: 0.9rem; line-height: 1.8; font-weight: 300;
+  max-width: 360px;
+}
+
+footer h4 {
+  color: var(--cream); font-size: 0.8rem;
+  letter-spacing: 2px; text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+footer ul { list-style: none; }
+footer ul li { margin-bottom: 10px; }
+
+footer ul a {
+  color: rgba(255,255,255,0.5);
+  text-decoration: none; font-size: 0.9rem;
+  font-weight: 300; transition: color 0.3s;
+}
+
+footer ul a:hover { color: var(--gold); }
+
+.footer-bottom {
+  max-width: 1100px; margin: 0 auto;
+  padding-top: 24px;
+  display: flex; justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem; font-weight: 300;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .nav-links { display: none; }
+  .nav-links.show {
+    display: flex; flex-direction: column;
+    position: absolute; top: 80px; left: 0; right: 0;
+    background: linear-gradient(135deg, #1a1a1a 0%, #232323 100%);
+    padding: 24px 40px; gap: 20px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+  .nav-toggle { display: block; }
+  .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+}
+
+@media (max-width: 600px) {
+  nav { padding: 0 20px; }
+  .page-header { padding: 40px 16px; }
+  .step-card { padding: 1.3rem; }
+  .grant-details { grid-template-columns: 1fr; }
+  .grant-header { flex-direction: column; }
+  .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img src="logo-nav.png" alt="S&K Designs Logo">
+    <div class="nav-logo-text">S<span>&amp;</span>K Designs</div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#services">Services</a></li>
+    <li><a href="index.html#portfolio">Portfolio</a></li>
+    <li><a href="index.html#process">Process</a></li>
+    <li><a href="grant-finder.html" class="active">Grant Finder</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+  <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('show')" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="badge">Accessibility Resources</div>
+  <h1>Home Modification <em>Grant Finder</em></h1>
+  <p>Answer a few questions and we'll match you with federal, state, veteran, and nonprofit programs that can help fund mobility and accessibility improvements to your home.</p>
+</div>
+
+<!-- MAIN CONTENT -->
+<main id="main" class="container">
+
+  <!-- Progress -->
+  <div class="progress-bar" id="progressBar" role="navigation" aria-label="Form progress">
+    <div class="progress-step active" data-step="1"><span class="progress-dot"></span> Location</div>
+    <div class="progress-step" data-step="2"><span class="progress-dot"></span> Background</div>
+    <div class="progress-step" data-step="3"><span class="progress-dot"></span> Disability</div>
+    <div class="progress-step" data-step="4"><span class="progress-dot"></span> Housing</div>
+    <div class="progress-step" data-step="5"><span class="progress-dot"></span> Income</div>
+    <div class="progress-step" data-step="6"><span class="progress-dot"></span> Needs</div>
+    <div class="progress-step" data-step="7"><span class="progress-dot"></span> Results</div>
+  </div>
+
+  <!-- STEP 1: Location -->
+  <div class="step-card visible" id="step1">
+    <h2>Where do you live?</h2>
+    <p class="subtitle">Your state determines which programs are available to you.</p>
+    <div class="field-group">
+      <label class="field-label" for="stateSelect">US State or Territory</label>
+      <select id="stateSelect" aria-required="true">
+        <option value="">-- Select your state --</option>
+      </select>
+    </div>
+    <div class="field-group">
+      <label class="field-label" for="areaType">Do you live in a rural or urban area?</label>
+      <select id="areaType">
+        <option value="">-- Select --</option>
+        <option value="rural">Rural area (population under 35,000)</option>
+        <option value="urban">Urban or suburban area</option>
+        <option value="unsure">I'm not sure</option>
+      </select>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="goToStep(2)">Continue</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: Background -->
+  <div class="step-card" id="step2">
+    <h2>Tell us about your background</h2>
+    <p class="subtitle">Some grants are available specifically for veterans and first responders.</p>
+    <div class="field-group">
+      <label class="field-label">Which of the following apply to you? (select all that apply)</label>
+      <div class="checkbox-group" id="backgroundGroup">
+        <label class="checkbox-item">
+          <input type="checkbox" name="background" value="veteran">
+          <div><div class="cb-label">I am a veteran</div><div class="cb-desc">Served in the US Armed Forces</div></div>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="background" value="veteran_injured">
+          <div><div class="cb-label">I am a veteran injured in the line of duty</div><div class="cb-desc">Have a service-connected disability rating from the VA</div></div>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="background" value="first_responder">
+          <div><div class="cb-label">I am/was a first responder</div><div class="cb-desc">Police officer, firefighter, EMT, or paramedic</div></div>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="background" value="none">
+          <div><div class="cb-label">None of the above</div><div class="cb-desc">I am a civilian with no military or first responder service</div></div>
+        </label>
+      </div>
+    </div>
+    <div class="field-group">
+      <label class="field-label" for="ageGroup">What is your age?</label>
+      <select id="ageGroup">
+        <option value="">-- Select --</option>
+        <option value="under62">Under 62</option>
+        <option value="62plus">62 or older</option>
+      </select>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goToStep(1)">Back</button>
+      <button class="btn btn-primary" onclick="goToStep(3)">Continue</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: Disability / Injury Origin -->
+  <div class="step-card" id="step3">
+    <h2>Tell us about your disability or injury</h2>
+    <p class="subtitle">Some nonprofits and programs serve people with specific types of disabilities or injuries. This helps us find the best matches.</p>
+    <div class="field-group">
+      <label class="field-label">What type of disability or condition do you have? (select all that apply)</label>
+      <div class="checkbox-group" id="disabilityGroup">
+        <label class="checkbox-item">
+          <input type="checkbox" name="disability" value="spinal_cord">
+          <div><div class="cb-label">Spinal cord injury / Paralysis</div><div class="cb-desc">Paraplegia, quadriplegia, or other spinal cord conditions</div></div>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="disability" value="tbi">
+          <div><div class="cb-label">Traumatic brain injury (TBI)</div><div class="cb-desc">Brain injury from accident, fall, or other trauma</div></div>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="disability" value="amputation">
+          <div><div class="cb-label">Amputation / Limb loss</div><div class="cb-desc">Loss or loss of use of one or more limbs</div></div>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="disability" value="mobility_other">
+          <div><div class="cb-label">Other mobility impairment</div><div class="cb-desc">MS, muscular dystrophy, arthritis, stroke recovery, or other conditions affecting mobility</div></div>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="disability" value="vision">
+          <div><div class="cb-label">Vision impairment / Blindness</div><div class="cb-desc">Partial or total vision loss</div></div>
+        </label>
+      </div>
+    </div>
+    <div class="field-group">
+      <label class="field-label">How did your injury or disability occur? (select all that apply)</label>
+      <div class="checkbox-group" id="injuryOriginGroup">
+        <label class="checkbox-item">
+          <input type="checkbox" name="injuryOrigin" value="sports_football">
+          <div><div class="cb-label">High school or youth football</div><div class="cb-desc">Spinal cord or other catastrophic injury from football</div></div>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="injuryOrigin" value="sports_other">
+          <div><div class="cb-label">Other sports or recreational activity</div><div class="cb-desc">Skiing, cycling, diving, gymnastics, or other sports injury</div></div>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="injuryOrigin" value="accident">
+          <div><div class="cb-label">Vehicle accident or fall</div><div class="cb-desc">Car crash, motorcycle accident, fall, or other traumatic accident</div></div>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="injuryOrigin" value="medical">
+          <div><div class="cb-label">Medical condition or illness</div><div class="cb-desc">Congenital condition, progressive disease, stroke, or medical event</div></div>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="injuryOrigin" value="line_of_duty">
+          <div><div class="cb-label">Line of duty (military or first responder)</div><div class="cb-desc">Injury sustained during military service or emergency response</div></div>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="injuryOrigin" value="other_origin">
+          <div><div class="cb-label">Other / Prefer not to say</div></div>
+        </label>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goToStep(2)">Back</button>
+      <button class="btn btn-primary" onclick="goToStep(4)">Continue</button>
+    </div>
+  </div>
+
+  <!-- STEP 4: Housing -->
+  <div class="step-card" id="step4">
+    <h2>Your housing situation</h2>
+    <p class="subtitle">Eligibility often depends on whether you own or rent.</p>
+    <div class="field-group">
+      <label class="field-label">Do you own or rent your home?</label>
+      <div class="checkbox-group">
+        <label class="checkbox-item">
+          <input type="radio" name="ownership" value="own">
+          <div><div class="cb-label">I own my home</div><div class="cb-desc">You hold the deed or are buying through a mortgage</div></div>
+        </label>
+        <label class="checkbox-item">
+          <input type="radio" name="ownership" value="rent">
+          <div><div class="cb-label">I rent my home</div><div class="cb-desc">You pay rent to a landlord or property manager</div></div>
+        </label>
+        <label class="checkbox-item">
+          <input type="radio" name="ownership" value="family">
+          <div><div class="cb-label">I live with family</div><div class="cb-desc">You reside in a home owned by a family member</div></div>
+        </label>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goToStep(3)">Back</button>
+      <button class="btn btn-primary" onclick="goToStep(5)">Continue</button>
+    </div>
+  </div>
+
+  <!-- STEP 5: Income -->
+  <div class="step-card" id="step5">
+    <h2>Household income</h2>
+    <p class="subtitle">Many programs are income-based. This helps match you to the right grants.</p>
+    <div class="field-group">
+      <label class="field-label" for="incomeLevel">Approximate annual household income</label>
+      <select id="incomeLevel">
+        <option value="">-- Select --</option>
+        <option value="veryLow">Very low (below 50% of area median income)</option>
+        <option value="low">Low (50%-80% of area median income)</option>
+        <option value="moderate">Moderate (80%-120% of area median income)</option>
+        <option value="above">Above moderate income</option>
+        <option value="unsure">I'm not sure</option>
+      </select>
+    </div>
+    <div class="field-group">
+      <label class="field-label" for="householdSize">Household size</label>
+      <select id="householdSize">
+        <option value="">-- Select --</option>
+        <option value="1">1 person</option>
+        <option value="2">2 people</option>
+        <option value="3">3 people</option>
+        <option value="4">4 people</option>
+        <option value="5">5 people</option>
+        <option value="6">6+ people</option>
+      </select>
+    </div>
+    <div class="field-group">
+      <label class="field-label">Can you obtain affordable credit from other sources (bank loan, etc.)?</label>
+      <div class="checkbox-group">
+        <label class="checkbox-item">
+          <input type="radio" name="credit" value="no">
+          <div><div class="cb-label">No</div><div class="cb-desc">I have been unable to get affordable credit elsewhere</div></div>
+        </label>
+        <label class="checkbox-item">
+          <input type="radio" name="credit" value="yes">
+          <div><div class="cb-label">Yes</div><div class="cb-desc">I may qualify for standard financing</div></div>
+        </label>
+        <label class="checkbox-item">
+          <input type="radio" name="credit" value="unsure">
+          <div><div class="cb-label">I'm not sure</div></div>
+        </label>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goToStep(4)">Back</button>
+      <button class="btn btn-primary" onclick="goToStep(6)">Continue</button>
+    </div>
+  </div>
+
+  <!-- STEP 6: Needs -->
+  <div class="step-card" id="step6">
+    <h2>What modifications do you need?</h2>
+    <p class="subtitle">Select all the types of home modifications you're interested in.</p>
+    <div class="field-group">
+      <label class="field-label">Type of modifications needed (select all that apply)</label>
+      <div class="checkbox-group" id="modsGroup">
+        <label class="checkbox-item">
+          <input type="checkbox" name="mods" value="ramps">
+          <div><div class="cb-label">Wheelchair ramps</div><div class="cb-desc">Entrance ramps, threshold ramps</div></div>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="mods" value="bathroom">
+          <div><div class="cb-label">Bathroom accessibility</div><div class="cb-desc">Roll-in showers, grab bars, raised toilets, accessible tubs</div></div>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="mods" value="doors">
+          <div><div class="cb-label">Doorway widening</div><div class="cb-desc">Widening doorways and hallways for wheelchair access</div></div>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="mods" value="stairlift">
+          <div><div class="cb-label">Stairlifts or elevators</div><div class="cb-desc">Stair climbing devices, home elevators, platform lifts</div></div>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="mods" value="kitchen">
+          <div><div class="cb-label">Kitchen modifications</div><div class="cb-desc">Lowered countertops, accessible cabinets, modified sinks</div></div>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="mods" value="flooring">
+          <div><div class="cb-label">Flooring and lighting</div><div class="cb-desc">Non-slip flooring, adaptive lighting, smart home features</div></div>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="mods" value="other">
+          <div><div class="cb-label">Other structural modifications</div><div class="cb-desc">Ceiling lifts, room additions, general accessibility improvements</div></div>
+        </label>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goToStep(5)">Back</button>
+      <button class="btn btn-primary" onclick="findGrants()">Find My Grants</button>
+    </div>
+  </div>
+
+  <!-- STEP 7: Results -->
+  <div class="step-card" id="step7">
+    <h2>Your Grant Matches</h2>
+    <p class="subtitle" id="resultsSummary"></p>
+    <div id="resultsContainer"></div>
+    <div class="disclaimer">
+      <strong>Important:</strong> This tool provides general guidance based on publicly available program information as of 2026. Grant availability, amounts, and eligibility requirements change frequently. Always verify current details directly with the administering agency before applying. This tool does not guarantee eligibility or funding. Consider contacting your local Center for Independent Living for personalized assistance.
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goToStep(6)">Back</button>
+      <button class="btn btn-restart" onclick="restart()">Start Over</button>
+    </div>
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="index.html" class="nav-logo">
+        <img src="logo-medium.png" alt="S&K Designs Logo" style="width:60px;height:60px;border-radius:6px;">
+        <div class="nav-logo-text" style="font-size:1.2rem;">S<span>&amp;</span>K Designs</div>
+      </a>
+      <p>Premier custom woodworking and residential construction serving Eagle Mountain and the surrounding Utah County area.</p>
+    </div>
+    <div>
+      <h4>Services</h4>
+      <ul>
+        <li><a href="index.html#services">Custom Built-Ins</a></li>
+        <li><a href="index.html#services">Basement Finishing</a></li>
+        <li><a href="index.html#services">Outdoor Structures</a></li>
+        <li><a href="index.html#services">Specialized Woodworking</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="index.html#about">About Us</a></li>
+        <li><a href="index.html#portfolio">Portfolio</a></li>
+        <li><a href="grant-finder.html">Grant Finder</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 S&K Designs. All rights reserved.</span>
+    <span>Eagle Mountain, Utah</span>
+  </div>
+</footer>
+
+<script>
+// ========== US STATES ==========
+const states = [
+  "Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut",
+  "Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Indiana","Iowa",
+  "Kansas","Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan",
+  "Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada","New Hampshire",
+  "New Jersey","New Mexico","New York","North Carolina","North Dakota","Ohio",
+  "Oklahoma","Oregon","Pennsylvania","Rhode Island","South Carolina","South Dakota",
+  "Tennessee","Texas","Utah","Vermont","Virginia","Washington","West Virginia",
+  "Wisconsin","Wyoming","District of Columbia","Puerto Rico","Guam","US Virgin Islands"
+];
+
+const stateSelect = document.getElementById('stateSelect');
+states.forEach(s => {
+  const opt = document.createElement('option');
+  opt.value = s;
+  opt.textContent = s;
+  stateSelect.appendChild(opt);
+});
+
+// ========== CHECKBOX HIGHLIGHTING ==========
+document.querySelectorAll('.checkbox-item').forEach(item => {
+  const input = item.querySelector('input');
+  input.addEventListener('change', () => {
+    if (input.type === 'radio') {
+      item.closest('.checkbox-group').querySelectorAll('.checkbox-item').forEach(ci => ci.classList.remove('selected'));
+    }
+    if (input.type === 'checkbox' && !input.checked) {
+      item.classList.remove('selected');
+    } else {
+      item.classList.add('selected');
+    }
+    // "None" logic for background
+    if (input.name === 'background') {
+      if (input.value === 'none' && input.checked) {
+        document.querySelectorAll('input[name="background"]').forEach(cb => {
+          if (cb.value !== 'none') { cb.checked = false; cb.closest('.checkbox-item').classList.remove('selected'); }
+        });
+      } else if (input.value !== 'none' && input.checked) {
+        const none = document.querySelector('input[name="background"][value="none"]');
+        if (none) { none.checked = false; none.closest('.checkbox-item').classList.remove('selected'); }
+      }
+    }
+  });
+});
+
+// ========== NAVIGATION ==========
+let currentStep = 1;
+
+function goToStep(n) {
+  if (n > currentStep && !validateStep(currentStep)) return;
+  document.getElementById('step' + currentStep).classList.remove('visible');
+  document.getElementById('step' + n).classList.add('visible');
+  currentStep = n;
+  updateProgress();
+  window.scrollTo({ top: document.querySelector('.container').offsetTop - 20, behavior: 'smooth' });
+}
+
+function updateProgress() {
+  document.querySelectorAll('.progress-step').forEach(el => {
+    const s = parseInt(el.dataset.step);
+    el.classList.remove('active', 'done');
+    if (s === currentStep) el.classList.add('active');
+    else if (s < currentStep) el.classList.add('done');
+  });
+}
+
+function validateStep(step) {
+  if (step === 1) {
+    if (!stateSelect.value) { stateSelect.focus(); stateSelect.style.borderColor = '#c0392b'; return false; }
+    stateSelect.style.borderColor = '';
+  }
+  return true;
+}
+
+function restart() {
+  document.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
+  document.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach(i => { i.checked = false; });
+  document.querySelectorAll('.checkbox-item').forEach(ci => ci.classList.remove('selected'));
+  goToStep(1);
+}
+
+// ========== GRANTS DATABASE ==========
+const grantsDB = [
+  {
+    id: 'va_sah',
+    name: 'VA Specially Adapted Housing (SAH) Grant',
+    amount: 'Up to $126,526 (FY 2026)',
+    type: 'federal',
+    tags: ['federal', 'veteran'],
+    description: 'Helps veterans with certain severe service-connected disabilities buy, build, or modify a home to live independently. Can be used up to 6 times over your lifetime.',
+    eligibility: 'Must have a service-connected disability rated by the VA, including loss or loss of use of limbs, blindness, or severe burns.',
+    ownershipReq: ['own', 'family'],
+    url: 'https://www.va.gov/housing-assistance/disability-housing-grants/',
+    agency: 'US Department of Veterans Affairs',
+    reqVeteran: true,
+    reqInjured: true,
+    incomeRestricted: false,
+    ruralOnly: false,
+  },
+  {
+    id: 'va_sha',
+    name: 'VA Special Housing Adaptation (SHA) Grant',
+    amount: 'Up to $25,350 (FY 2026)',
+    type: 'federal',
+    tags: ['federal', 'veteran'],
+    description: 'Helps veterans with specific service-connected disabilities adapt a home owned by the veteran or a family member. Covers modifications like widening doorways and installing ramps.',
+    eligibility: 'Must have a qualifying service-connected disability such as blindness, loss of use of hands, or severe respiratory injury.',
+    ownershipReq: ['own', 'family'],
+    url: 'https://www.va.gov/housing-assistance/disability-housing-grants/',
+    agency: 'US Department of Veterans Affairs',
+    reqVeteran: true,
+    reqInjured: true,
+    incomeRestricted: false,
+    ruralOnly: false,
+  },
+  {
+    id: 'va_tra',
+    name: 'VA Temporary Residence Adaptation (TRA) Grant',
+    amount: 'Up to $50,961 (SAH) or $9,100 (SHA)',
+    type: 'federal',
+    tags: ['federal', 'veteran'],
+    description: 'Helps veterans temporarily living in a family member\'s home make accessibility modifications. Available to veterans who qualify for SAH or SHA grants.',
+    eligibility: 'Must qualify for SAH or SHA and be temporarily residing in a family member\'s home.',
+    ownershipReq: ['own', 'rent', 'family'],
+    url: 'https://www.va.gov/housing-assistance/disability-housing-grants/',
+    agency: 'US Department of Veterans Affairs',
+    reqVeteran: true,
+    reqInjured: true,
+    incomeRestricted: false,
+    ruralOnly: false,
+  },
+  {
+    id: 'va_hisa',
+    name: 'VA Home Improvements and Structural Alterations (HISA) Grant',
+    amount: 'Up to $6,800 (service-connected) or $2,000 (non-service-connected)',
+    type: 'federal',
+    tags: ['federal', 'veteran'],
+    description: 'Provides funding for medically necessary home improvements and structural changes for disability access, including bathroom modifications, ramps, and improved access to facilities.',
+    eligibility: 'Veterans with a service-connected or non-service-connected disability. Must be enrolled in VA healthcare.',
+    ownershipReq: ['own', 'rent', 'family'],
+    url: 'https://www.va.gov/housing-assistance/disability-housing-grants/',
+    agency: 'US Department of Veterans Affairs',
+    reqVeteran: true,
+    reqInjured: false,
+    incomeRestricted: false,
+    ruralOnly: false,
+  },
+  {
+    id: 'usda_504_grant',
+    name: 'USDA Section 504 Home Repair Grant',
+    amount: 'Up to $10,000',
+    type: 'federal',
+    tags: ['federal', 'lowIncome'],
+    description: 'Grants for very low-income homeowners age 62+ to remove health and safety hazards, including accessibility modifications. Grants never need to be repaid.',
+    eligibility: 'Must be 62 or older, very low income (below 50% of area median), own and occupy the home, live in an eligible rural area, and be unable to repay a loan.',
+    ownershipReq: ['own'],
+    url: 'https://www.rd.usda.gov/programs-services/single-family-housing-programs/single-family-housing-repair-loans-grants',
+    agency: 'US Department of Agriculture - Rural Development',
+    reqVeteran: false,
+    reqInjured: false,
+    incomeRestricted: true,
+    incomeMax: 'veryLow',
+    ruralOnly: true,
+    req62: true,
+  },
+  {
+    id: 'usda_504_loan',
+    name: 'USDA Section 504 Home Repair Loan',
+    amount: 'Up to $40,000 at 1% interest',
+    type: 'federal',
+    tags: ['federal', 'lowIncome'],
+    description: 'Very low interest (1% APR) loans for low-income homeowners in rural areas to make home repairs and accessibility modifications. Can be combined with the Section 504 grant for up to $50,000 total.',
+    eligibility: 'Must own and occupy the home in an eligible rural area, have very low income (below 50% of area median), and be unable to obtain affordable credit elsewhere.',
+    ownershipReq: ['own'],
+    url: 'https://www.rd.usda.gov/programs-services/single-family-housing-programs/single-family-housing-repair-loans-grants',
+    agency: 'US Department of Agriculture - Rural Development',
+    reqVeteran: false,
+    reqInjured: false,
+    incomeRestricted: true,
+    incomeMax: 'veryLow',
+    ruralOnly: true,
+  },
+  {
+    id: 'cdbg',
+    name: 'HUD Community Development Block Grant (CDBG)',
+    amount: 'Typically $5,000 - $25,000 (varies by locality)',
+    type: 'federal',
+    tags: ['federal', 'lowIncome'],
+    description: 'Federal funds distributed to local governments for community development needs, including home accessibility modifications for low-income residents. Contact your local HUD office or city/county housing department.',
+    eligibility: 'Low to moderate income households. Availability and amounts vary by locality. Your local government administers these funds.',
+    ownershipReq: ['own', 'rent', 'family'],
+    url: 'https://www.hud.gov/program_offices/comm_planning/cdbg',
+    agency: 'US Department of Housing and Urban Development (via local government)',
+    reqVeteran: false,
+    reqInjured: false,
+    incomeRestricted: true,
+    incomeMax: 'moderate',
+    ruralOnly: false,
+  },
+  {
+    id: 'medicaid_hcbs',
+    name: 'Medicaid Home & Community-Based Services (HCBS) Waiver',
+    amount: 'Varies by state (some states up to $14,000+)',
+    type: 'state',
+    tags: ['state', 'lowIncome'],
+    description: 'Most states offer Medicaid waivers that cover home modifications to help individuals with disabilities remain at home safely. Covers ramps, bathroom modifications, widened doorways, stairlifts, and other accessibility adaptations.',
+    eligibility: 'Must qualify for Medicaid in your state. Modifications must be medically necessary. Waitlists may apply. Contact your state Medicaid office.',
+    ownershipReq: ['own', 'rent', 'family'],
+    url: 'https://www.medicaid.gov/medicaid/home-community-based-services/home-community-based-services-authorities/home-community-based-services-1915c',
+    agency: 'State Medicaid Agency',
+    reqVeteran: false,
+    reqInjured: false,
+    incomeRestricted: true,
+    incomeMax: 'low',
+    ruralOnly: false,
+  },
+  {
+    id: 'psob',
+    name: 'Public Safety Officers\' Benefits (PSOB) Program',
+    amount: '$461,656 disability benefit (FY 2026)',
+    type: 'federal',
+    tags: ['federal'],
+    description: 'Provides a one-time lump-sum disability benefit to public safety officers (police, fire, EMS) catastrophically injured in the line of duty. Funds can be used for any purpose including home modifications.',
+    eligibility: 'Must be a public safety officer permanently and totally disabled as a direct result of a line-of-duty injury.',
+    ownershipReq: ['own', 'rent', 'family'],
+    url: 'https://bja.ojp.gov/program/psob',
+    agency: 'Bureau of Justice Assistance, US Dept. of Justice',
+    reqVeteran: false,
+    reqInjured: false,
+    reqFirstResponder: true,
+    incomeRestricted: false,
+    ruralOnly: false,
+  },
+  {
+    id: 'rebuilding_together',
+    name: 'Rebuilding Together',
+    amount: 'Free (no-cost modifications)',
+    type: 'nonprofit',
+    tags: ['nonprofit'],
+    description: 'National nonprofit providing no-cost home repairs and accessibility modifications including ramps, grab bars, widened doorways, and bathroom accessibility. Services vary by local affiliate.',
+    eligibility: 'Low-income homeowners, seniors, veterans, and people with disabilities. Contact your local Rebuilding Together affiliate.',
+    ownershipReq: ['own'],
+    url: 'https://rebuildingtogether.org/',
+    agency: 'Rebuilding Together (nonprofit)',
+    reqVeteran: false,
+    reqInjured: false,
+    incomeRestricted: true,
+    incomeMax: 'moderate',
+    ruralOnly: false,
+  },
+  {
+    id: 'habitat',
+    name: 'Habitat for Humanity - Aging in Place / Home Repair',
+    amount: 'Free or low-cost (varies by affiliate)',
+    type: 'nonprofit',
+    tags: ['nonprofit'],
+    description: 'Offers free or low-cost home repairs and accessible design solutions for individuals with limited income, including mobility modifications and aging-in-place improvements.',
+    eligibility: 'Low-income homeowners. Availability varies by local affiliate. Some affiliates have specific accessibility programs.',
+    ownershipReq: ['own'],
+    url: 'https://www.habitat.org/',
+    agency: 'Habitat for Humanity (nonprofit)',
+    reqVeteran: false,
+    reqInjured: false,
+    incomeRestricted: true,
+    incomeMax: 'moderate',
+    ruralOnly: false,
+  },
+  {
+    id: 'state_vocrehab',
+    name: 'State Vocational Rehabilitation (VR) Program',
+    amount: 'Varies by state',
+    type: 'state',
+    tags: ['state'],
+    description: 'Every state has a Vocational Rehabilitation program that may fund home modifications if they are necessary for you to work or prepare for employment. Can cover ramps, bathroom modifications, and other accessibility improvements.',
+    eligibility: 'Must have a disability that affects your ability to work. Must be working toward an employment goal. Contact your state VR agency.',
+    ownershipReq: ['own', 'rent', 'family'],
+    url: 'https://rsa.ed.gov/about/states',
+    agency: 'State Vocational Rehabilitation Agency',
+    reqVeteran: false,
+    reqInjured: false,
+    incomeRestricted: false,
+    ruralOnly: false,
+  },
+  {
+    id: 'cil',
+    name: 'Center for Independent Living (CIL) Programs',
+    amount: 'Varies (may provide direct assistance or referrals)',
+    type: 'nonprofit',
+    tags: ['nonprofit'],
+    description: 'Centers for Independent Living exist in every state and can help identify funding sources, connect you with local programs, and sometimes provide direct assistance for home modifications.',
+    eligibility: 'Any person with a disability. CILs provide free information, referral, and advocacy services.',
+    ownershipReq: ['own', 'rent', 'family'],
+    url: 'https://www.ilru.org/projects/cil-net/cil-center-and-association-directory',
+    agency: 'Independent Living Research Utilization (directory)',
+    reqVeteran: false,
+    reqInjured: false,
+    incomeRestricted: false,
+    ruralOnly: false,
+  },
+  {
+    id: 'gridiron_heroes',
+    name: 'Gridiron Heroes Spinal Cord Injury Foundation',
+    amount: 'Varies (direct assistance)',
+    type: 'nonprofit',
+    tags: ['nonprofit'],
+    description: 'Provides short- and long-term assistance to individuals who sustained traumatic spinal cord injuries from high school football. Can assist with home modifications, equipment, and daily living needs.',
+    eligibility: 'Must have sustained a spinal cord injury from high school football.',
+    ownershipReq: ['own', 'rent', 'family'],
+    url: 'https://www.gridironheroes.org/',
+    agency: 'Gridiron Heroes (nonprofit)',
+    reqVeteran: false,
+    reqInjured: false,
+    incomeRestricted: false,
+    ruralOnly: false,
+    reqInjuryOrigin: ['sports_football'],
+    reqDisability: ['spinal_cord'],
+  },
+  {
+    id: 'bryon_riesch',
+    name: 'Bryon Riesch Paralysis Foundation',
+    amount: 'Up to $10,000',
+    type: 'nonprofit',
+    tags: ['nonprofit'],
+    description: 'Provides grants for home and transportation accessibility, adaptive equipment such as shower chairs, and other needs for people living with mobility disabilities, with preference for those with spinal cord injuries.',
+    eligibility: 'People with paralysis or mobility disabilities. Preference given to spinal cord injury survivors.',
+    ownershipReq: ['own', 'rent', 'family'],
+    url: 'https://brfrp.org/',
+    agency: 'Bryon Riesch Paralysis Foundation (nonprofit)',
+    reqVeteran: false,
+    reqInjured: false,
+    incomeRestricted: false,
+    ruralOnly: false,
+    reqDisability: ['spinal_cord'],
+  },
+  {
+    id: 'high_fives',
+    name: 'High Fives Non-Profit Foundation',
+    amount: 'Varies (Empowerment Fund grants)',
+    type: 'nonprofit',
+    tags: ['nonprofit'],
+    description: 'Supports athletes with life-changing spinal cord injuries, brain injuries, amputations, or other mobility-limiting injuries sustained during sports. Provides grants for adaptive equipment, home modifications, living expenses, and more.',
+    eligibility: 'Must have a spinal cord injury, brain injury, amputation, or mobility-limiting injury sustained during a sport or outdoor recreation activity.',
+    ownershipReq: ['own', 'rent', 'family'],
+    url: 'https://highfivesfoundation.org/',
+    agency: 'High Fives Non-Profit Foundation',
+    reqVeteran: false,
+    reqInjured: false,
+    incomeRestricted: false,
+    ruralOnly: false,
+    reqInjuryOrigin: ['sports_football', 'sports_other'],
+    reqDisability: ['spinal_cord', 'tbi', 'amputation'],
+  },
+  {
+    id: 'joseph_groh',
+    name: 'Joseph Groh Foundation',
+    amount: 'Varies (direct assistance)',
+    type: 'nonprofit',
+    tags: ['nonprofit'],
+    description: 'Provides assistance for durable medical equipment, home modifications for accessibility, and services for individuals in the construction trades or related industries who become disabled.',
+    eligibility: 'Individuals who have a connection to the construction trades or related industries. Also assists others with disabilities on a case-by-case basis.',
+    ownershipReq: ['own', 'rent', 'family'],
+    url: 'https://www.josephgrohfoundation.org/',
+    agency: 'Joseph Groh Foundation (nonprofit)',
+    reqVeteran: false,
+    reqInjured: false,
+    incomeRestricted: false,
+    ruralOnly: false,
+  },
+  {
+    id: 'be_perfect',
+    name: 'Be Perfect Foundation',
+    amount: 'Varies (supplemental funds)',
+    type: 'nonprofit',
+    tags: ['nonprofit'],
+    description: 'Provides supplemental funds for wheelchairs, home adaptations, vehicle modifications, high medical bills, and general daily medical necessities for people with spinal cord injuries and paralysis.',
+    eligibility: 'Individuals living with spinal cord injuries or paralysis.',
+    ownershipReq: ['own', 'rent', 'family'],
+    url: 'https://www.beperfect.org/',
+    agency: 'Be Perfect Foundation (nonprofit)',
+    reqVeteran: false,
+    reqInjured: false,
+    incomeRestricted: false,
+    ruralOnly: false,
+    reqDisability: ['spinal_cord'],
+  },
+  {
+    id: 'united_spinal',
+    name: 'United Spinal Association Grants',
+    amount: 'Varies by program',
+    type: 'nonprofit',
+    tags: ['nonprofit'],
+    description: 'Provides grants and resources for people with spinal cord injuries and disorders. Maintains a comprehensive resource center that can help identify additional funding opportunities for home modifications.',
+    eligibility: 'Individuals with spinal cord injuries or disorders.',
+    ownershipReq: ['own', 'rent', 'family'],
+    url: 'https://unitedspinal.org/',
+    agency: 'United Spinal Association (nonprofit)',
+    reqVeteran: false,
+    reqInjured: false,
+    incomeRestricted: false,
+    ruralOnly: false,
+    reqDisability: ['spinal_cord'],
+  },
+  {
+    id: 'ga_bsitfc',
+    name: 'Georgia Brain & Spinal Injury Trust Fund',
+    amount: 'Varies (state-funded)',
+    type: 'state',
+    tags: ['state'],
+    description: 'Georgia state program providing home accessibility improvements for residents with traumatic brain injuries or spinal cord injuries from external force (falls, vehicle crashes, assaults). Works through the Home Access Program.',
+    eligibility: 'Must be a Georgia resident with a TBI or SCI caused by an external force. Must apply through the Home Access Program.',
+    ownershipReq: ['own', 'rent', 'family'],
+    url: 'https://bsitf.georgia.gov/',
+    agency: 'Georgia Brain & Spinal Injury Trust Fund Commission',
+    reqVeteran: false,
+    reqInjured: false,
+    incomeRestricted: false,
+    ruralOnly: false,
+    reqState: ['Georgia'],
+    reqDisability: ['spinal_cord', 'tbi'],
+  },
+];
+
+// ========== MATCHING ENGINE ==========
+function getFormData() {
+  const bgChecks = Array.from(document.querySelectorAll('input[name="background"]:checked')).map(c => c.value);
+  const ownership = document.querySelector('input[name="ownership"]:checked');
+  const credit = document.querySelector('input[name="credit"]:checked');
+  const mods = Array.from(document.querySelectorAll('input[name="mods"]:checked')).map(c => c.value);
+  const disabilities = Array.from(document.querySelectorAll('input[name="disability"]:checked')).map(c => c.value);
+  const injuryOrigins = Array.from(document.querySelectorAll('input[name="injuryOrigin"]:checked')).map(c => c.value);
+  return {
+    state: stateSelect.value,
+    area: document.getElementById('areaType').value,
+    isVeteran: bgChecks.includes('veteran') || bgChecks.includes('veteran_injured'),
+    isInjuredVeteran: bgChecks.includes('veteran_injured'),
+    isFirstResponder: bgChecks.includes('first_responder'),
+    age: document.getElementById('ageGroup').value,
+    ownership: ownership ? ownership.value : '',
+    income: document.getElementById('incomeLevel').value,
+    householdSize: document.getElementById('householdSize').value,
+    credit: credit ? credit.value : '',
+    mods: mods,
+    disabilities: disabilities,
+    injuryOrigins: injuryOrigins,
+  };
+}
+
+function incomeAtOrBelow(userIncome, maxIncome) {
+  const levels = ['veryLow', 'low', 'moderate', 'above'];
+  if (userIncome === 'unsure') return true;
+  const userIdx = levels.indexOf(userIncome);
+  const maxIdx = levels.indexOf(maxIncome);
+  return userIdx <= maxIdx;
+}
+
+function matchGrants(data) {
+  const results = [];
+
+  grantsDB.forEach(grant => {
+    let score = 0;
+    let reasons = [];
+
+    // Veteran requirement
+    if (grant.reqVeteran && !data.isVeteran) return;
+    if (grant.reqInjured && !data.isInjuredVeteran) return;
+
+    // First responder
+    if (grant.reqFirstResponder && !data.isFirstResponder) return;
+
+    // Rural requirement
+    if (grant.ruralOnly && data.area === 'urban') return;
+
+    // Age requirement
+    if (grant.req62 && data.age === 'under62') return;
+
+    // Ownership
+    if (grant.ownershipReq && data.ownership && !grant.ownershipReq.includes(data.ownership)) return;
+
+    // Income check
+    if (grant.incomeRestricted && grant.incomeMax && data.income && data.income !== 'unsure') {
+      if (!incomeAtOrBelow(data.income, grant.incomeMax)) return;
+    }
+
+    // State-specific grants
+    if (grant.reqState && grant.reqState.length > 0 && !grant.reqState.includes(data.state)) return;
+
+    // Disability-specific grants
+    if (grant.reqDisability && grant.reqDisability.length > 0) {
+      const hasMatch = grant.reqDisability.some(d => data.disabilities.includes(d));
+      if (!hasMatch && data.disabilities.length > 0) return;
+    }
+
+    // Injury origin-specific grants
+    if (grant.reqInjuryOrigin && grant.reqInjuryOrigin.length > 0) {
+      const hasOriginMatch = grant.reqInjuryOrigin.some(o => data.injuryOrigins.includes(o));
+      if (!hasOriginMatch && data.injuryOrigins.length > 0) return;
+    }
+
+    // Score boosting
+    if (grant.reqVeteran && data.isVeteran) { score += 3; reasons.push('Veteran-specific program'); }
+    if (grant.reqFirstResponder && data.isFirstResponder) { score += 3; reasons.push('First responder program'); }
+    if (grant.ruralOnly && data.area === 'rural') { score += 1; reasons.push('Available in rural areas'); }
+    if (grant.req62 && data.age === '62plus') { score += 1; reasons.push('Age 62+ eligible'); }
+    if (!grant.incomeRestricted) { score += 1; reasons.push('No income restriction'); }
+
+    // Boost for disability/injury match
+    if (grant.reqDisability && data.disabilities.length > 0) {
+      const matchCount = grant.reqDisability.filter(d => data.disabilities.includes(d)).length;
+      if (matchCount > 0) { score += 3; reasons.push('Matches your disability type'); }
+    }
+    if (grant.reqInjuryOrigin && data.injuryOrigins.length > 0) {
+      const originMatch = grant.reqInjuryOrigin.filter(o => data.injuryOrigins.includes(o)).length;
+      if (originMatch > 0) { score += 3; reasons.push('Matches your injury cause'); }
+    }
+    if (grant.reqState && grant.reqState.includes(data.state)) { score += 2; reasons.push('State-specific program'); }
+
+    // Slight boost for income match
+    if (grant.incomeRestricted && data.income) {
+      if (data.income === 'veryLow') score += 2;
+      else if (data.income === 'low') score += 1;
+    }
+
+    results.push({ ...grant, score, reasons });
+  });
+
+  results.sort((a, b) => b.score - a.score);
+  return results;
+}
+
+// ========== DISPLAY RESULTS ==========
+function findGrants() {
+  const data = getFormData();
+  const matches = matchGrants(data);
+
+  const container = document.getElementById('resultsContainer');
+  const summary = document.getElementById('resultsSummary');
+
+  if (matches.length === 0) {
+    container.innerHTML = `
+      <div class="no-results">
+        <h3>No exact matches found</h3>
+        <p>Based on your answers, we couldn't find specific programs. However, we recommend contacting your local Center for Independent Living for personalized assistance.</p>
+        <a href="https://www.ilru.org/projects/cil-net/cil-center-and-association-directory" target="_blank" rel="noopener" class="grant-link">Find Your Local Center for Independent Living &rarr;</a>
+      </div>`;
+    summary.textContent = 'We couldn\'t find specific matches, but there are resources that may help.';
+  } else {
+    summary.innerHTML = `Based on your answers, we found <strong>${matches.length} potential program${matches.length > 1 ? 's' : ''}</strong> that may help fund your home modifications in <strong>${data.state}</strong>.`;
+
+    let html = '';
+    matches.forEach(grant => {
+      const tagHTML = grant.tags.map(t => `<span class="tag tag-${t}">${t === 'lowIncome' ? 'Income-Based' : t}</span>`).join('');
+
+      html += `
+        <div class="grant-card">
+          <div class="grant-header">
+            <div class="grant-title">${grant.name}</div>
+            <div class="grant-amount">${grant.amount}</div>
+          </div>
+          <div class="grant-tags">${tagHTML}</div>
+          <div class="grant-desc">${grant.description}</div>
+          <div class="grant-details">
+            <div class="grant-detail-item"><span class="label">Eligibility:</span></div>
+            <div class="grant-detail-item"><span class="value">${grant.eligibility}</span></div>
+            <div class="grant-detail-item"><span class="label">Agency:</span></div>
+            <div class="grant-detail-item"><span class="value">${grant.agency}</span></div>
+          </div>
+          <a href="${grant.url}" target="_blank" rel="noopener" class="grant-link">Learn More &amp; Apply &rarr;</a>
+        </div>`;
+    });
+    container.innerHTML = html;
+  }
+
+  goToStep(7);
+}
+</script>
+
+</body>
+</html>
