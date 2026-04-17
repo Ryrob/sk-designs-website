@@ -147,8 +147,9 @@ nav {
   text-transform: uppercase;
   font-weight: 500;
 }
-.progress-step.active { opacity: 1; color: var(--dark-wood); font-weight: 600; }
-.progress-step.done { opacity: 1; color: var(--copper); }
+.progress-step.active { opacity: 1; color: var(--dark-wood); font-weight: 600; cursor: default; }
+.progress-step.done { opacity: 1; color: var(--copper); cursor: pointer; }
+.progress-step.done:hover { color: var(--gold); }
 .progress-dot {
   width: 10px; height: 10px; border-radius: 50%;
   background: var(--light-gray); border: 2px solid var(--light-gray);
@@ -367,6 +368,116 @@ select:focus, input:focus {
   line-height: 1.6;
   font-weight: 300;
 }
+
+/* ===== GRANT ACTIONS ===== */
+.grant-actions {
+  display: flex; gap: 0.8rem; align-items: center; margin-top: 0.8rem; flex-wrap: wrap;
+}
+.btn-apply {
+  display: inline-block;
+  padding: 0.5rem 1.2rem;
+  background: var(--gold);
+  color: var(--white);
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.82rem; font-weight: 600;
+  letter-spacing: 0.5px; text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background 0.3s;
+}
+.btn-apply:hover { background: var(--copper); }
+
+.btn-write-help {
+  padding: 0.5rem 1.2rem;
+  background: transparent;
+  color: var(--warm-brown);
+  border: 2px solid var(--warm-brown);
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.82rem; font-weight: 600;
+  letter-spacing: 0.5px; text-transform: uppercase;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.btn-write-help:hover { background: rgba(93,64,55,0.06); }
+
+/* ===== AI WRITING ASSISTANT ===== */
+.writing-assistant {
+  display: none;
+  margin-top: 1rem;
+  border-top: 1px solid var(--light-gray);
+  padding-top: 1rem;
+  animation: fadeIn 0.3s ease;
+}
+.writing-assistant.open { display: block; }
+
+.writing-assistant h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem; color: var(--dark-wood);
+  margin-bottom: 0.5rem;
+}
+.writing-assistant .wa-desc {
+  font-size: 0.85rem; color: var(--text-light); font-weight: 300;
+  margin-bottom: 0.8rem;
+}
+
+.wa-field { margin-bottom: 0.8rem; }
+.wa-field label {
+  display: block; font-size: 0.85rem; font-weight: 600;
+  color: var(--charcoal); margin-bottom: 0.3rem;
+}
+.wa-field textarea {
+  width: 100%; padding: 0.6rem 0.8rem;
+  border: 2px solid var(--light-gray); border-radius: 8px;
+  font-family: 'Raleway', sans-serif; font-size: 0.9rem;
+  color: var(--text); resize: vertical; min-height: 70px;
+  transition: border-color 0.2s;
+}
+.wa-field textarea:focus { border-color: var(--gold); outline: none; box-shadow: 0 0 0 3px rgba(201,169,110,0.15); }
+
+.wa-output {
+  background: rgba(201,169,110,0.06);
+  border: 1px solid rgba(201,169,110,0.15);
+  border-radius: 8px;
+  padding: 1rem; margin-top: 0.8rem;
+  font-size: 0.9rem; line-height: 1.7;
+  color: var(--text);
+  white-space: pre-wrap;
+  display: none;
+}
+.wa-output.visible { display: block; }
+.wa-output .output-label {
+  font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--copper); margin-bottom: 0.4rem;
+}
+.wa-output .output-text { font-weight: 300; }
+
+.btn-generate {
+  padding: 0.5rem 1.4rem;
+  background: var(--dark-wood);
+  color: var(--white);
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.82rem; font-weight: 600;
+  letter-spacing: 0.5px; text-transform: uppercase;
+  border: none; border-radius: 6px;
+  cursor: pointer; transition: background 0.3s;
+}
+.btn-generate:hover { background: var(--warm-brown); }
+.btn-generate:disabled { background: #bdc3c7; cursor: wait; }
+
+.btn-copy {
+  padding: 0.4rem 1rem;
+  background: transparent;
+  color: var(--copper);
+  border: 1px solid var(--copper);
+  font-family: 'Raleway', sans-serif;
+  font-size: 0.78rem; font-weight: 600;
+  letter-spacing: 0.5px; text-transform: uppercase;
+  border-radius: 5px;
+  cursor: pointer; transition: all 0.3s;
+  margin-top: 0.5rem;
+}
+.btn-copy:hover { background: rgba(184,115,51,0.06); }
 
 /* ===== FOOTER (matches index.html) ===== */
 footer {
@@ -643,11 +754,13 @@ footer ul a:hover { color: var(--gold); }
       <label class="field-label" for="incomeLevel">Approximate annual household income</label>
       <select id="incomeLevel">
         <option value="">-- Select --</option>
-        <option value="veryLow">Very low (below 50% of area median income)</option>
-        <option value="low">Low (50%-80% of area median income)</option>
-        <option value="moderate">Moderate (80%-120% of area median income)</option>
-        <option value="above">Above moderate income</option>
-        <option value="unsure">I'm not sure</option>
+        <option value="veryLow">Under $30,000 per year</option>
+        <option value="veryLow">$30,000 - $50,000 per year</option>
+        <option value="low">$50,000 - $65,000 per year</option>
+        <option value="moderate">$65,000 - $80,000 per year</option>
+        <option value="moderate">$80,000 - $100,000 per year</option>
+        <option value="above">$100,000+ per year</option>
+        <option value="unsure">I'd rather not say</option>
       </select>
     </div>
     <div class="field-group">
@@ -828,12 +941,15 @@ document.querySelectorAll('.checkbox-item').forEach(item => {
 
 // ========== NAVIGATION ==========
 let currentStep = 1;
+let highestStepReached = 1;
 
 function goToStep(n) {
-  if (n > currentStep && !validateStep(currentStep)) return;
+  // Only validate when moving forward past where we've been
+  if (n > highestStepReached && !validateStep(currentStep)) return;
   document.getElementById('step' + currentStep).classList.remove('visible');
   document.getElementById('step' + n).classList.add('visible');
   currentStep = n;
+  if (n > highestStepReached) highestStepReached = n;
   updateProgress();
   window.scrollTo({ top: document.querySelector('.container').offsetTop - 20, behavior: 'smooth' });
 }
@@ -843,9 +959,20 @@ function updateProgress() {
     const s = parseInt(el.dataset.step);
     el.classList.remove('active', 'done');
     if (s === currentStep) el.classList.add('active');
-    else if (s < currentStep) el.classList.add('done');
+    else if (s < currentStep || (s <= highestStepReached && s !== currentStep)) el.classList.add('done');
   });
 }
+
+// Make progress steps clickable
+document.querySelectorAll('.progress-step').forEach(el => {
+  el.addEventListener('click', () => {
+    const target = parseInt(el.dataset.step);
+    // Allow clicking any step you've already visited
+    if (target <= highestStepReached) {
+      goToStep(target);
+    }
+  });
+});
 
 function validateStep(step) {
   if (step === 1) {
@@ -859,6 +986,7 @@ function restart() {
   document.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
   document.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach(i => { i.checked = false; });
   document.querySelectorAll('.checkbox-item').forEach(ci => ci.classList.remove('selected'));
+  highestStepReached = 1;
   goToStep(1);
 }
 
@@ -868,12 +996,13 @@ const grantsDB = [
     id: 'va_sah',
     name: 'VA Specially Adapted Housing (SAH) Grant',
     amount: 'Up to $126,526 (FY 2026)',
+    sortValue: 126526,
     type: 'federal',
     tags: ['federal', 'veteran'],
     description: 'Helps veterans with certain severe service-connected disabilities buy, build, or modify a home to live independently. Can be used up to 6 times over your lifetime.',
     eligibility: 'Must have a service-connected disability rated by the VA, including loss or loss of use of limbs, blindness, or severe burns.',
     ownershipReq: ['own', 'family'],
-    url: 'https://www.va.gov/housing-assistance/disability-housing-grants/',
+    url: 'https://www.va.gov/housing-assistance/disability-housing-grants/how-to-apply/',
     agency: 'US Department of Veterans Affairs',
     reqVeteran: true,
     reqInjured: true,
@@ -884,12 +1013,13 @@ const grantsDB = [
     id: 'va_sha',
     name: 'VA Special Housing Adaptation (SHA) Grant',
     amount: 'Up to $25,350 (FY 2026)',
+    sortValue: 25350,
     type: 'federal',
     tags: ['federal', 'veteran'],
     description: 'Helps veterans with specific service-connected disabilities adapt a home owned by the veteran or a family member. Covers modifications like widening doorways and installing ramps.',
     eligibility: 'Must have a qualifying service-connected disability such as blindness, loss of use of hands, or severe respiratory injury.',
     ownershipReq: ['own', 'family'],
-    url: 'https://www.va.gov/housing-assistance/disability-housing-grants/',
+    url: 'https://www.va.gov/housing-assistance/disability-housing-grants/how-to-apply/',
     agency: 'US Department of Veterans Affairs',
     reqVeteran: true,
     reqInjured: true,
@@ -900,12 +1030,13 @@ const grantsDB = [
     id: 'va_tra',
     name: 'VA Temporary Residence Adaptation (TRA) Grant',
     amount: 'Up to $50,961 (SAH) or $9,100 (SHA)',
+    sortValue: 50961,
     type: 'federal',
     tags: ['federal', 'veteran'],
     description: 'Helps veterans temporarily living in a family member\'s home make accessibility modifications. Available to veterans who qualify for SAH or SHA grants.',
     eligibility: 'Must qualify for SAH or SHA and be temporarily residing in a family member\'s home.',
     ownershipReq: ['own', 'rent', 'family'],
-    url: 'https://www.va.gov/housing-assistance/disability-housing-grants/',
+    url: 'https://www.va.gov/housing-assistance/disability-housing-grants/how-to-apply/',
     agency: 'US Department of Veterans Affairs',
     reqVeteran: true,
     reqInjured: true,
@@ -916,12 +1047,13 @@ const grantsDB = [
     id: 'va_hisa',
     name: 'VA Home Improvements and Structural Alterations (HISA) Grant',
     amount: 'Up to $6,800 (service-connected) or $2,000 (non-service-connected)',
+    sortValue: 6800,
     type: 'federal',
     tags: ['federal', 'veteran'],
     description: 'Provides funding for medically necessary home improvements and structural changes for disability access, including bathroom modifications, ramps, and improved access to facilities.',
     eligibility: 'Veterans with a service-connected or non-service-connected disability. Must be enrolled in VA healthcare.',
     ownershipReq: ['own', 'rent', 'family'],
-    url: 'https://www.va.gov/housing-assistance/disability-housing-grants/',
+    url: 'https://www.va.gov/housing-assistance/disability-housing-grants/how-to-apply/',
     agency: 'US Department of Veterans Affairs',
     reqVeteran: true,
     reqInjured: false,
@@ -932,6 +1064,7 @@ const grantsDB = [
     id: 'usda_504_grant',
     name: 'USDA Section 504 Home Repair Grant',
     amount: 'Up to $10,000',
+    sortValue: 10000,
     type: 'federal',
     tags: ['federal', 'lowIncome'],
     description: 'Grants for very low-income homeowners age 62+ to remove health and safety hazards, including accessibility modifications. Grants never need to be repaid.',
@@ -950,6 +1083,7 @@ const grantsDB = [
     id: 'usda_504_loan',
     name: 'USDA Section 504 Home Repair Loan',
     amount: 'Up to $40,000 at 1% interest',
+    sortValue: 40000,
     type: 'federal',
     tags: ['federal', 'lowIncome'],
     description: 'Very low interest (1% APR) loans for low-income homeowners in rural areas to make home repairs and accessibility modifications. Can be combined with the Section 504 grant for up to $50,000 total.',
@@ -967,12 +1101,13 @@ const grantsDB = [
     id: 'cdbg',
     name: 'HUD Community Development Block Grant (CDBG)',
     amount: 'Typically $5,000 - $25,000 (varies by locality)',
+    sortValue: 25000,
     type: 'federal',
     tags: ['federal', 'lowIncome'],
     description: 'Federal funds distributed to local governments for community development needs, including home accessibility modifications for low-income residents. Contact your local HUD office or city/county housing department.',
     eligibility: 'Low to moderate income households. Availability and amounts vary by locality. Your local government administers these funds.',
     ownershipReq: ['own', 'rent', 'family'],
-    url: 'https://www.hud.gov/program_offices/comm_planning/cdbg',
+    url: 'https://www.hud.gov/hud-partners/community-cdbg',
     agency: 'US Department of Housing and Urban Development (via local government)',
     reqVeteran: false,
     reqInjured: false,
@@ -984,12 +1119,13 @@ const grantsDB = [
     id: 'medicaid_hcbs',
     name: 'Medicaid Home & Community-Based Services (HCBS) Waiver',
     amount: 'Varies by state (some states up to $14,000+)',
+    sortValue: 14000,
     type: 'state',
     tags: ['state', 'lowIncome'],
     description: 'Most states offer Medicaid waivers that cover home modifications to help individuals with disabilities remain at home safely. Covers ramps, bathroom modifications, widened doorways, stairlifts, and other accessibility adaptations.',
     eligibility: 'Must qualify for Medicaid in your state. Modifications must be medically necessary. Waitlists may apply. Contact your state Medicaid office.',
     ownershipReq: ['own', 'rent', 'family'],
-    url: 'https://www.medicaid.gov/medicaid/home-community-based-services/home-community-based-services-authorities/home-community-based-services-1915c',
+    url: 'https://www.medicaid.gov/medicaid/home-community-based-services/home-community-based-services-authorities',
     agency: 'State Medicaid Agency',
     reqVeteran: false,
     reqInjured: false,
@@ -1001,12 +1137,13 @@ const grantsDB = [
     id: 'psob',
     name: 'Public Safety Officers\' Benefits (PSOB) Program',
     amount: '$461,656 disability benefit (FY 2026)',
+    sortValue: 461656,
     type: 'federal',
     tags: ['federal'],
     description: 'Provides a one-time lump-sum disability benefit to public safety officers (police, fire, EMS) catastrophically injured in the line of duty. Funds can be used for any purpose including home modifications.',
     eligibility: 'Must be a public safety officer permanently and totally disabled as a direct result of a line-of-duty injury.',
     ownershipReq: ['own', 'rent', 'family'],
-    url: 'https://bja.ojp.gov/program/psob',
+    url: 'https://bja.ojp.gov/program/psob/benefits',
     agency: 'Bureau of Justice Assistance, US Dept. of Justice',
     reqVeteran: false,
     reqInjured: false,
@@ -1018,12 +1155,13 @@ const grantsDB = [
     id: 'rebuilding_together',
     name: 'Rebuilding Together',
     amount: 'Free (no-cost modifications)',
+    sortValue: 5000,
     type: 'nonprofit',
     tags: ['nonprofit'],
     description: 'National nonprofit providing no-cost home repairs and accessibility modifications including ramps, grab bars, widened doorways, and bathroom accessibility. Services vary by local affiliate.',
     eligibility: 'Low-income homeowners, seniors, veterans, and people with disabilities. Contact your local Rebuilding Together affiliate.',
     ownershipReq: ['own'],
-    url: 'https://rebuildingtogether.org/',
+    url: 'https://rebuildingtogether.org/find-your-local-affiliate',
     agency: 'Rebuilding Together (nonprofit)',
     reqVeteran: false,
     reqInjured: false,
@@ -1035,12 +1173,13 @@ const grantsDB = [
     id: 'habitat',
     name: 'Habitat for Humanity - Aging in Place / Home Repair',
     amount: 'Free or low-cost (varies by affiliate)',
+    sortValue: 5000,
     type: 'nonprofit',
     tags: ['nonprofit'],
     description: 'Offers free or low-cost home repairs and accessible design solutions for individuals with limited income, including mobility modifications and aging-in-place improvements.',
     eligibility: 'Low-income homeowners. Availability varies by local affiliate. Some affiliates have specific accessibility programs.',
     ownershipReq: ['own'],
-    url: 'https://www.habitat.org/',
+    url: 'https://www.habitat.org/our-work/aging-in-place',
     agency: 'Habitat for Humanity (nonprofit)',
     reqVeteran: false,
     reqInjured: false,
@@ -1052,6 +1191,7 @@ const grantsDB = [
     id: 'state_vocrehab',
     name: 'State Vocational Rehabilitation (VR) Program',
     amount: 'Varies by state',
+    sortValue: 5000,
     type: 'state',
     tags: ['state'],
     description: 'Every state has a Vocational Rehabilitation program that may fund home modifications if they are necessary for you to work or prepare for employment. Can cover ramps, bathroom modifications, and other accessibility improvements.',
@@ -1068,12 +1208,13 @@ const grantsDB = [
     id: 'cil',
     name: 'Center for Independent Living (CIL) Programs',
     amount: 'Varies (may provide direct assistance or referrals)',
+    sortValue: 1000,
     type: 'nonprofit',
     tags: ['nonprofit'],
     description: 'Centers for Independent Living exist in every state and can help identify funding sources, connect you with local programs, and sometimes provide direct assistance for home modifications.',
     eligibility: 'Any person with a disability. CILs provide free information, referral, and advocacy services.',
     ownershipReq: ['own', 'rent', 'family'],
-    url: 'https://www.ilru.org/projects/cil-net/cil-center-and-association-directory',
+    url: 'https://www.ilru.org/cil-directory',
     agency: 'Independent Living Research Utilization (directory)',
     reqVeteran: false,
     reqInjured: false,
@@ -1084,12 +1225,13 @@ const grantsDB = [
     id: 'gridiron_heroes',
     name: 'Gridiron Heroes Spinal Cord Injury Foundation',
     amount: 'Varies (direct assistance)',
+    sortValue: 5000,
     type: 'nonprofit',
     tags: ['nonprofit'],
     description: 'Provides short- and long-term assistance to individuals who sustained traumatic spinal cord injuries from high school football. Can assist with home modifications, equipment, and daily living needs.',
     eligibility: 'Must have sustained a spinal cord injury from high school football.',
     ownershipReq: ['own', 'rent', 'family'],
-    url: 'https://www.gridironheroes.org/',
+    url: 'https://www.gridironheroes.org/get-help/',
     agency: 'Gridiron Heroes (nonprofit)',
     reqVeteran: false,
     reqInjured: false,
@@ -1102,12 +1244,13 @@ const grantsDB = [
     id: 'bryon_riesch',
     name: 'Bryon Riesch Paralysis Foundation',
     amount: 'Up to $10,000',
+    sortValue: 10000,
     type: 'nonprofit',
     tags: ['nonprofit'],
     description: 'Provides grants for home and transportation accessibility, adaptive equipment such as shower chairs, and other needs for people living with mobility disabilities, with preference for those with spinal cord injuries.',
     eligibility: 'People with paralysis or mobility disabilities. Preference given to spinal cord injury survivors.',
     ownershipReq: ['own', 'rent', 'family'],
-    url: 'https://brfrp.org/',
+    url: 'https://brpf.org/charitable-grant-application/',
     agency: 'Bryon Riesch Paralysis Foundation (nonprofit)',
     reqVeteran: false,
     reqInjured: false,
@@ -1119,12 +1262,13 @@ const grantsDB = [
     id: 'high_fives',
     name: 'High Fives Non-Profit Foundation',
     amount: 'Varies (Empowerment Fund grants)',
+    sortValue: 5000,
     type: 'nonprofit',
     tags: ['nonprofit'],
     description: 'Supports athletes with life-changing spinal cord injuries, brain injuries, amputations, or other mobility-limiting injuries sustained during sports. Provides grants for adaptive equipment, home modifications, living expenses, and more.',
     eligibility: 'Must have a spinal cord injury, brain injury, amputation, or mobility-limiting injury sustained during a sport or outdoor recreation activity.',
     ownershipReq: ['own', 'rent', 'family'],
-    url: 'https://highfivesfoundation.org/',
+    url: 'https://highfivesfoundation.org/grant-application/',
     agency: 'High Fives Non-Profit Foundation',
     reqVeteran: false,
     reqInjured: false,
@@ -1137,12 +1281,13 @@ const grantsDB = [
     id: 'joseph_groh',
     name: 'Joseph Groh Foundation',
     amount: 'Varies (direct assistance)',
+    sortValue: 5000,
     type: 'nonprofit',
     tags: ['nonprofit'],
     description: 'Provides assistance for durable medical equipment, home modifications for accessibility, and services for individuals in the construction trades or related industries who become disabled.',
     eligibility: 'Individuals who have a connection to the construction trades or related industries. Also assists others with disabilities on a case-by-case basis.',
     ownershipReq: ['own', 'rent', 'family'],
-    url: 'https://www.josephgrohfoundation.org/',
+    url: 'https://www.josephgrohfoundation.org/webapp/p/200/apply-for-assistance',
     agency: 'Joseph Groh Foundation (nonprofit)',
     reqVeteran: false,
     reqInjured: false,
@@ -1153,12 +1298,13 @@ const grantsDB = [
     id: 'be_perfect',
     name: 'Be Perfect Foundation',
     amount: 'Varies (supplemental funds)',
+    sortValue: 5000,
     type: 'nonprofit',
     tags: ['nonprofit'],
     description: 'Provides supplemental funds for wheelchairs, home adaptations, vehicle modifications, high medical bills, and general daily medical necessities for people with spinal cord injuries and paralysis.',
     eligibility: 'Individuals living with spinal cord injuries or paralysis.',
     ownershipReq: ['own', 'rent', 'family'],
-    url: 'https://www.beperfect.org/',
+    url: 'https://beperfectfoundation.org/',
     agency: 'Be Perfect Foundation (nonprofit)',
     reqVeteran: false,
     reqInjured: false,
@@ -1170,12 +1316,13 @@ const grantsDB = [
     id: 'united_spinal',
     name: 'United Spinal Association Grants',
     amount: 'Varies by program',
+    sortValue: 5000,
     type: 'nonprofit',
     tags: ['nonprofit'],
     description: 'Provides grants and resources for people with spinal cord injuries and disorders. Maintains a comprehensive resource center that can help identify additional funding opportunities for home modifications.',
     eligibility: 'Individuals with spinal cord injuries or disorders.',
     ownershipReq: ['own', 'rent', 'family'],
-    url: 'https://unitedspinal.org/',
+    url: 'https://askus-resource-center.unitedspinal.org/index.php?pg=request',
     agency: 'United Spinal Association (nonprofit)',
     reqVeteran: false,
     reqInjured: false,
@@ -1187,12 +1334,13 @@ const grantsDB = [
     id: 'ga_bsitfc',
     name: 'Georgia Brain & Spinal Injury Trust Fund',
     amount: 'Varies (state-funded)',
+    sortValue: 10000,
     type: 'state',
     tags: ['state'],
     description: 'Georgia state program providing home accessibility improvements for residents with traumatic brain injuries or spinal cord injuries from external force (falls, vehicle crashes, assaults). Works through the Home Access Program.',
     eligibility: 'Must be a Georgia resident with a TBI or SCI caused by an external force. Must apply through the Home Access Program.',
     ownershipReq: ['own', 'rent', 'family'],
-    url: 'https://bsitf.georgia.gov/',
+    url: 'https://bsitf.georgia.gov/how-do-i-apply-grant',
     agency: 'Georgia Brain & Spinal Injury Trust Fund Commission',
     reqVeteran: false,
     reqInjured: false,
@@ -1306,7 +1454,8 @@ function matchGrants(data) {
     results.push({ ...grant, score, reasons });
   });
 
-  results.sort((a, b) => b.score - a.score);
+  // Sort by dollar value (highest first), then by relevance score as tiebreaker
+  results.sort((a, b) => (b.sortValue || 0) - (a.sortValue || 0) || b.score - a.score);
   return results;
 }
 
@@ -1323,18 +1472,18 @@ function findGrants() {
       <div class="no-results">
         <h3>No exact matches found</h3>
         <p>Based on your answers, we couldn't find specific programs. However, we recommend contacting your local Center for Independent Living for personalized assistance.</p>
-        <a href="https://www.ilru.org/projects/cil-net/cil-center-and-association-directory" target="_blank" rel="noopener" class="grant-link">Find Your Local Center for Independent Living &rarr;</a>
+        <a href="https://www.ilru.org/cil-directory" target="_blank" rel="noopener" class="grant-link">Find Your Local Center for Independent Living &rarr;</a>
       </div>`;
     summary.textContent = 'We couldn\'t find specific matches, but there are resources that may help.';
   } else {
     summary.innerHTML = `Based on your answers, we found <strong>${matches.length} potential program${matches.length > 1 ? 's' : ''}</strong> that may help fund your home modifications in <strong>${data.state}</strong>.`;
 
     let html = '';
-    matches.forEach(grant => {
+    matches.forEach((grant, idx) => {
       const tagHTML = grant.tags.map(t => `<span class="tag tag-${t}">${t === 'lowIncome' ? 'Income-Based' : t}</span>`).join('');
 
       html += `
-        <div class="grant-card">
+        <div class="grant-card" id="gc-${idx}">
           <div class="grant-header">
             <div class="grant-title">${grant.name}</div>
             <div class="grant-amount">${grant.amount}</div>
@@ -1347,13 +1496,200 @@ function findGrants() {
             <div class="grant-detail-item"><span class="label">Agency:</span></div>
             <div class="grant-detail-item"><span class="value">${grant.agency}</span></div>
           </div>
-          <a href="${grant.url}" target="_blank" rel="noopener" class="grant-link">Learn More &amp; Apply &rarr;</a>
+          <div class="grant-actions">
+            <a href="${grant.url}" target="_blank" rel="noopener" class="btn-apply">Learn More &amp; Apply</a>
+            <button class="btn-write-help" onclick="toggleWritingAssistant(${idx}, '${grant.name.replace(/'/g, "\\'")}')">Grant Writing Help</button>
+          </div>
+          <div class="writing-assistant" id="wa-${idx}">
+            <h4>AI Grant Writing Assistant</h4>
+            <p class="wa-desc">Describe your situation in plain language and we'll help you write a professional grant application response.</p>
+            <div class="wa-field">
+              <label>What modifications do you need and why?</label>
+              <textarea id="wa-need-${idx}" placeholder="Example: I need a wheelchair ramp for my front door because I use a power wheelchair and currently can't enter my home without help..."></textarea>
+            </div>
+            <div class="wa-field">
+              <label>Tell us about your current living situation</label>
+              <textarea id="wa-situation-${idx}" placeholder="Example: I live alone in a single-story home. After my spinal cord injury last year, I can no longer use my bathtub or access the kitchen counters..."></textarea>
+            </div>
+            <div class="wa-field">
+              <label>How will these modifications improve your independence?</label>
+              <textarea id="wa-impact-${idx}" placeholder="Example: With a roll-in shower and widened doorways I would be able to bathe independently and move freely throughout my home..."></textarea>
+            </div>
+            <button class="btn-generate" id="wa-btn-${idx}" onclick="generateProfessionalText(${idx})">Improve My Language</button>
+            <div class="wa-output" id="wa-out-${idx}">
+              <div class="output-label">Professional Version</div>
+              <div class="output-text" id="wa-text-${idx}"></div>
+              <button class="btn-copy" onclick="copyToClipboard(${idx})">Copy to Clipboard</button>
+            </div>
+          </div>
         </div>`;
     });
     container.innerHTML = html;
   }
 
   goToStep(7);
+}
+
+// ========== AI WRITING ASSISTANT ==========
+function toggleWritingAssistant(idx, grantName) {
+  const panel = document.getElementById('wa-' + idx);
+  panel.classList.toggle('open');
+  if (panel.classList.contains('open')) {
+    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+function generateProfessionalText(idx) {
+  const need = document.getElementById('wa-need-' + idx).value.trim();
+  const situation = document.getElementById('wa-situation-' + idx).value.trim();
+  const impact = document.getElementById('wa-impact-' + idx).value.trim();
+
+  if (!need && !situation && !impact) {
+    alert('Please fill in at least one field so we can help improve your language.');
+    return;
+  }
+
+  const btn = document.getElementById('wa-btn-' + idx);
+  btn.disabled = true;
+  btn.textContent = 'Generating...';
+
+  // Simulate a brief processing delay for UX
+  setTimeout(() => {
+    const result = professionalizeText(need, situation, impact);
+    const output = document.getElementById('wa-out-' + idx);
+    const textEl = document.getElementById('wa-text-' + idx);
+    textEl.textContent = result;
+    output.classList.add('visible');
+    btn.disabled = false;
+    btn.textContent = 'Improve My Language';
+    output.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 800);
+}
+
+function professionalizeText(need, situation, impact) {
+  let sections = [];
+
+  if (need) {
+    const improved = enhanceSentences(need, 'need');
+    sections.push('STATEMENT OF NEED:\n' + improved);
+  }
+
+  if (situation) {
+    const improved = enhanceSentences(situation, 'situation');
+    sections.push('CURRENT LIVING SITUATION:\n' + improved);
+  }
+
+  if (impact) {
+    const improved = enhanceSentences(impact, 'impact');
+    sections.push('ANTICIPATED IMPACT:\n' + improved);
+  }
+
+  return sections.join('\n\n');
+}
+
+function enhanceSentences(text, type) {
+  // Clean up and capitalize
+  let result = text.charAt(0).toUpperCase() + text.slice(1);
+
+  // Ensure it ends with a period
+  if (!/[.!]$/.test(result.trim())) result = result.trim() + '.';
+
+  // Professional replacements
+  const replacements = [
+    [/\bi can't\b/gi, 'I am unable to'],
+    [/\bcan't\b/gi, 'cannot'],
+    [/\bdon't\b/gi, 'do not'],
+    [/\bwon't\b/gi, 'will not'],
+    [/\bisn't\b/gi, 'is not'],
+    [/\baren't\b/gi, 'are not'],
+    [/\bdidn't\b/gi, 'did not'],
+    [/\bwasn't\b/gi, 'was not'],
+    [/\bwouldn't\b/gi, 'would not'],
+    [/\bcouldn't\b/gi, 'could not'],
+    [/\bshouldn't\b/gi, 'should not'],
+    [/\bhaven't\b/gi, 'have not'],
+    [/\bhasn't\b/gi, 'has not'],
+    [/\bi'm\b/gi, 'I am'],
+    [/\bi've\b/gi, 'I have'],
+    [/\bi'd\b/gi, 'I would'],
+    [/\bi'll\b/gi, 'I will'],
+    [/\bwanna\b/gi, 'wish to'],
+    [/\bgonna\b/gi, 'going to'],
+    [/\bgotta\b/gi, 'need to'],
+    [/\bkinda\b/gi, 'somewhat'],
+    [/\bget around\b/gi, 'navigate my home environment'],
+    [/\bget in and out\b/gi, 'enter and exit'],
+    [/\bget into\b/gi, 'access'],
+    [/\bget out of\b/gi, 'exit'],
+    [/\bhard to\b/gi, 'difficult to'],
+    [/\breally hard\b/gi, 'extremely challenging'],
+    [/\breally difficult\b/gi, 'significantly challenging'],
+    [/\ba lot of trouble\b/gi, 'significant difficulty'],
+    [/\ba lot of help\b/gi, 'substantial assistance'],
+    [/\ba lot\b/gi, 'significantly'],
+    [/\bhelp me\b/gi, 'enable me to'],
+    [/\bneed help with\b/gi, 'require assistance with'],
+    [/\bneed help\b/gi, 'require assistance'],
+    [/\bby myself\b/gi, 'independently'],
+    [/\bon my own\b/gi, 'independently'],
+    [/\bwithout help\b/gi, 'without external assistance'],
+    [/\buse a wheelchair\b/gi, 'utilize a wheelchair for mobility'],
+    [/\bin a wheelchair\b/gi, 'a wheelchair user'],
+    [/\bwheelchair bound\b/gi, 'a full-time wheelchair user'],
+    [/\bbig problem\b/gi, 'significant barrier'],
+    [/\bbig deal\b/gi, 'substantial concern'],
+    [/\bstuck\b/gi, 'confined'],
+    [/\bfixed up\b/gi, 'modified'],
+    [/\bfix up\b/gi, 'modify'],
+    [/\bset up\b/gi, 'install'],
+    [/\bput in\b/gi, 'install'],
+    [/\bbathroom stuff\b/gi, 'bathroom accessibility modifications'],
+    [/\bkitchen stuff\b/gi, 'kitchen accessibility modifications'],
+    [/\bhouse stuff\b/gi, 'home modifications'],
+    [/\bmy house\b/gi, 'my residence'],
+    [/\bmy place\b/gi, 'my residence'],
+    [/\bfall down\b/gi, 'sustain a fall'],
+    [/\bfalling\b/gi, 'fall risk'],
+    [/\bscared of falling\b/gi, 'at elevated risk of sustaining a fall'],
+    [/\bgrab bars?\b/gi, 'safety grab bars'],
+    [/\bwalk-in shower\b/gi, 'roll-in accessible shower'],
+    [/\bwider doors?\b/gi, 'widened doorways to accommodate wheelchair passage'],
+    [/\bramp\b/gi, 'ADA-compliant access ramp'],
+  ];
+
+  replacements.forEach(([pattern, replacement]) => {
+    result = result.replace(pattern, replacement);
+  });
+
+  // Add professional framing based on type
+  if (type === 'need') {
+    if (!/^(I am writing|I respectfully|This letter|I am requesting)/i.test(result)) {
+      result = 'I am respectfully requesting assistance with the following home accessibility modifications. ' + result;
+    }
+  } else if (type === 'situation') {
+    if (!/^(I currently|Currently|At present|My current)/i.test(result)) {
+      result = 'Regarding my current living situation: ' + result.charAt(0).toLowerCase() + result.slice(1);
+    }
+  } else if (type === 'impact') {
+    if (!/^(These modifications|The proposed|Upon completion|With these)/i.test(result)) {
+      result = 'Upon completion of the proposed modifications, ' + result.charAt(0).toLowerCase() + result.slice(1);
+    }
+    if (!/independence|quality of life|self-sufficiency|autonomy/i.test(result)) {
+      result += ' These improvements would substantially enhance my independence, safety, and overall quality of life within my residence.';
+    }
+  }
+
+  return result;
+}
+
+function copyToClipboard(idx) {
+  const text = document.getElementById('wa-text-' + idx).textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('#wa-out-' + idx + ' .btn-copy');
+    const orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(() => { btn.textContent = orig; }, 2000);
+  });
 }
 </script>
 
