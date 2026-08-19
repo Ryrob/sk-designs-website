@@ -750,13 +750,14 @@ function buildCatalog(){
     it('steps','Concrete steps','step',275,false),
     it('removal','Concrete removal / haul','sq ft',3.5,false)
   ]);
-  C.basement=cat('Basement Finishing (general)','Trades / Services',['General Construction'],[
-    it('basefinish','Basement finish (frame + drywall + electrical)','sq ft',35,false),
+  C.basement=cat('Basement Finishing (general)','Trades / Services',['Framing','Electrical','Drywall','Finish Carpentry','Flooring'],[
+    it('basefinish','Basement finish (frame + drywall + electrical)','sq ft',35,true),
     it('flooring','Flooring (LVP / carpet / tile)','sq ft',5.5,false),
     it('ceiling','Finished / drop ceiling','sq ft',4.25,false),
     it('egress','Egress window & well','each',3200,false),
     it('bathroom','Bathroom addition','each',9500,false),
     it('wetbar','Wet bar','each',4200,false),
+    it('kitchen','Kitchen / kitchenette (full add-on)','each',18000,false),
     it('bedroom','Bedroom (finish + closet)','each',3800,false)
   ]);
   return C;
