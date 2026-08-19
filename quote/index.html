@@ -348,15 +348,19 @@ table.q td .ln-sub{color:var(--text-light);font-size:10.5px}
 
 <script>
 /* ============================ CATALOG ============================ */
-function it(id,name,unit,cost,std){return {id:id,name:name,unit:unit,cost:cost,std:!!std};}
+// sub-trade / material disciplines (for cost breakdown by subcontractor)
+const SUB_ORDER=['Framing','Electrical','Plumbing','HVAC','Insulation','Drywall',
+  'Tile & Waterproofing','Flooring','Cabinetry & Built-Ins','Countertops',
+  'Finish Carpentry','Paint & Stain','Fixtures & Appliances','Concrete','Landscaping','General'];
+function it(id,name,unit,cost,std,sub){return {id:id,name:name,unit:unit,cost:cost,std:!!std,sub:sub||'General'};}
 // shared base finish (no flooring — each space adds its own floor)
 function base(){return [
-  it('bf_frame','Wall framing, soffits & blocking','sq ft',8,true),
-  it('bf_drywall','Drywall — hang & finish','sq ft',3.25,true),
-  it('bf_elec','Electrical — outlets, switches & recessed lighting','sq ft',6,true),
-  it('bf_hvac','HVAC supply & return runs','each',850,true),
-  it('bf_paint','Prime & paint — walls & ceiling','sq ft',2.75,true),
-  it('bf_carp','Finish carpentry — base & door casing','sq ft',2.5,true)
+  it('bf_frame','Wall framing, soffits & blocking','sq ft',8,true,'Framing'),
+  it('bf_drywall','Drywall — hang & finish','sq ft',3.25,true,'Drywall'),
+  it('bf_elec','Electrical — outlets, switches & recessed lighting','sq ft',6,true,'Electrical'),
+  it('bf_hvac','HVAC supply & return runs','each',850,true,'HVAC'),
+  it('bf_paint','Prime & paint — walls & ceiling','sq ft',2.75,true,'Paint & Stain'),
+  it('bf_carp','Finish carpentry — base & door casing','sq ft',2.5,true,'Finish Carpentry')
 ];}
 function cat(label,group,req,items){return {label:label,group:group,req:req,items:items};}
 
@@ -366,399 +370,427 @@ function buildCatalog(){
   C.family=cat('Family Room / Main Rec Area','Primary Living Spaces',
     ['Framing','Electrical','HVAC','Drywall','Finish Carpentry','Paint','Flooring'],
     base().concat([
-      it('floor','Flooring — LVP / carpet','sq ft',5.5,true),
-      it('tv_ri','TV rough-in — blocking & AV wiring','each',350,true),
-      it('ent_center','Built-in entertainment center','linear ft',400,false),
-      it('float_shelf','Floating display shelves','each',180,false),
-      it('led_accent','LED accent lighting','linear ft',22,false)
+      it('floor','Flooring — LVP / carpet','sq ft',5.5,true,'Flooring'),
+      it('tv_ri','TV rough-in — blocking & AV wiring','each',350,true,'Electrical'),
+      it('ent_center','Built-in entertainment center','linear ft',400,false,'Cabinetry & Built-Ins'),
+      it('float_shelf','Floating display shelves','each',180,false,'Cabinetry & Built-Ins'),
+      it('led_accent','LED accent lighting','linear ft',22,false,'Electrical')
     ]));
   C.theater=cat('Home Theater / Media Room','Primary Living Spaces',
     ['Framing','Sound Insulation','Electrical & Low Voltage','HVAC','Drywall','Finish Carpentry','Paint','Carpet'],
     base().concat([
-      it('floor','Flooring — carpet','sq ft',5.5,true),
-      it('acoustic_frame','Acoustic isolation framing','sq ft',3,true),
-      it('sound_batt','Sound insulation batts','sq ft',1.75,true),
-      it('step_light','Step / aisle lighting','each',600,true),
-      it('av_prewire','5.1 / 7.1 speaker & AV pre-wire','each',1500,true),
-      it('acoustic_panel','Acoustic wall panelling','sq ft',18,false),
-      it('riser','Tiered seating platform','each',1800,false),
-      it('concession','Built-in concession bar','each',4200,false),
-      it('star_ceiling','LED / star ceiling','each',2200,false)
+      it('floor','Flooring — carpet','sq ft',5.5,true,'Flooring'),
+      it('acoustic_frame','Acoustic isolation framing','sq ft',3,true,'Framing'),
+      it('sound_batt','Sound insulation batts','sq ft',1.75,true,'Insulation'),
+      it('step_light','Step / aisle lighting','each',600,true,'Electrical'),
+      it('av_prewire','5.1 / 7.1 speaker & AV pre-wire','each',1500,true,'Electrical'),
+      it('acoustic_panel','Acoustic wall panelling','sq ft',18,false,'Finish Carpentry'),
+      it('riser','Tiered seating platform','each',1800,false,'Framing'),
+      it('concession','Built-in concession bar','each',4200,false,'Cabinetry & Built-Ins'),
+      it('star_ceiling','LED / star ceiling','each',2200,false,'Electrical')
     ]));
   C.game=cat('Game Room / Lounge','Primary Living Spaces',
     ['Framing','Electrical','HVAC','Drywall','Finish Carpentry','Paint','Flooring'],
     base().concat([
-      it('floor','Flooring — LVP / carpet','sq ft',5.5,true),
-      it('floor_outlet','Floor outlets','each',220,true),
-      it('billiard_ri','Overhead billiard fixture rough-in','each',300,true),
-      it('cue_rack','Wall-mounted cue rack','each',650,false),
-      it('scoreboard','Scoreboard surround','each',900,false),
-      it('bench_seat','Built-in padded bench seating','linear ft',260,false)
+      it('floor','Flooring — LVP / carpet','sq ft',5.5,true,'Flooring'),
+      it('floor_outlet','Floor outlets','each',220,true,'Electrical'),
+      it('billiard_ri','Overhead billiard fixture rough-in','each',300,true,'Electrical'),
+      it('cue_rack','Wall-mounted cue rack','each',650,false,'Cabinetry & Built-Ins'),
+      it('scoreboard','Scoreboard surround','each',900,false,'Electrical'),
+      it('bench_seat','Built-in padded bench seating','linear ft',260,false,'Finish Carpentry')
     ]));
   C.playroom=cat('Playroom','Primary Living Spaces',
     ['Framing','Electrical','HVAC','Drywall','Finish Carpentry','Paint','Flooring'],
     base().concat([
-      it('floor','Flooring — LVP / carpet','sq ft',5.5,true),
-      it('tr_outlet','Tamper-resistant outlets','each',180,true),
-      it('tv_prep','Wall-mount TV prep','each',300,true),
-      it('toy_shelf','Built-in book / toy shelving','linear ft',300,false),
-      it('cubbies','Cubbies','each',900,false),
-      it('reading_bench','Reading nook bench','each',1200,false),
-      it('playhouse','Playhouse facade','each',1800,false)
+      it('floor','Flooring — LVP / carpet','sq ft',5.5,true,'Flooring'),
+      it('tr_outlet','Tamper-resistant outlets','each',180,true,'Electrical'),
+      it('tv_prep','Wall-mount TV prep','each',300,true,'Framing'),
+      it('toy_shelf','Built-in book / toy shelving','linear ft',300,false,'Cabinetry & Built-Ins'),
+      it('cubbies','Cubbies','each',900,false,'Cabinetry & Built-Ins'),
+      it('reading_bench','Reading nook bench','each',1200,false,'Finish Carpentry'),
+      it('playhouse','Playhouse facade','each',1800,false,'Finish Carpentry')
     ]));
   // ---- BEDROOMS & BATHROOMS ----
   C.bedroom=cat('Bedroom','Bedrooms & Bathrooms',
     ['Framing','Electrical','HVAC','Drywall','Finish Carpentry','Paint','Flooring'],
     base().concat([
-      it('floor','Flooring — carpet / LVP','sq ft',5.5,true),
-      it('egress','Egress window well — frame & trim','each',1200,true),
-      it('closet_frame','Closet framing','each',600,true),
-      it('smoke_co','Smoke / CO detector','each',150,true),
-      it('closet_light','Closet light','each',120,true),
-      it('closet_org','Built-in closet organizer','linear ft',210,false),
-      it('headboard_wall','Custom headboard wall','each',1600,false),
-      it('window_seat','Window seat with storage','each',1400,false)
+      it('floor','Flooring — carpet / LVP','sq ft',5.5,true,'Flooring'),
+      it('egress','Egress window well — frame & trim','each',1200,true,'Framing'),
+      it('closet_frame','Closet framing','each',600,true,'Framing'),
+      it('smoke_co','Smoke / CO detector','each',150,true,'Electrical'),
+      it('closet_light','Closet light','each',120,true,'Electrical'),
+      it('closet_org','Built-in closet organizer','linear ft',210,false,'Cabinetry & Built-Ins'),
+      it('walkin_closet','Walk-in closet system','each',2400,false,'Cabinetry & Built-Ins'),
+      it('headboard_wall','Custom headboard wall','each',1600,false,'Finish Carpentry'),
+      it('window_seat','Window seat with storage','each',1400,false,'Finish Carpentry'),
+      it('murphy_bed','Murphy / wall bed system','each',3600,false,'Cabinetry & Built-Ins')
     ]));
   C.halfbath=cat('Half Bath (Powder Room)','Bedrooms & Bathrooms',
     ['Framing','Rough Plumbing','Electrical','HVAC (exhaust)','Drywall','Finish Carpentry','Paint','Flooring'],
     base().concat([
-      it('floor','Flooring — tile / LVP','sq ft',8,true),
-      it('pocket_door','Pocket door prep','each',450,true),
-      it('plumb_ri','Sink & toilet plumbing rough-ins','each',1600,true),
-      it('exhaust','Exhaust fan','each',250,true),
-      it('vanity_light','Vanity lighting','each',300,true),
-      it('toilet','Toilet','each',450,true),
-      it('vanity1','Vanity & sink (one-sink)','each',1200,true),
-      it('float_wood_shelf','Built-in floating wood shelves','each',400,false),
-      it('custom_vanity','Custom vanity cabinet','each',2200,false)
+      it('floor','Flooring — tile / LVP','sq ft',8,true,'Tile & Waterproofing'),
+      it('pocket_door','Pocket door prep','each',450,true,'Finish Carpentry'),
+      it('plumb_ri','Sink & toilet plumbing rough-ins','each',1600,true,'Plumbing'),
+      it('exhaust','Exhaust fan','each',250,true,'HVAC'),
+      it('vanity_light','Vanity lighting','each',300,true,'Electrical'),
+      it('toilet','Toilet','each',450,true,'Plumbing'),
+      it('vanity1','Vanity & sink (one-sink)','each',1200,true,'Cabinetry & Built-Ins'),
+      it('mirror','Mirror','each',180,false,'Fixtures & Appliances'),
+      it('float_wood_shelf','Built-in floating wood shelves','each',400,false,'Cabinetry & Built-Ins'),
+      it('custom_vanity','Custom vanity cabinet','each',2200,false,'Cabinetry & Built-Ins')
     ]));
   C.spabath=cat('Full / Luxury Spa Bath','Bedrooms & Bathrooms',
     ['Framing','Rough Plumbing','Electrical','HVAC (exhaust)','Waterproofing / Tile','Drywall','Finish Carpentry','Paint','Tile Flooring'],
     base().concat([
-      it('floor_tile','Flooring — porcelain tile, set','sq ft',16,true),
-      it('shower_frame','Shower curb / niche framing','each',400,true),
-      it('plumb_full','Full plumbing rough-ins','each',3200,true),
-      it('high_fan','High-CFM exhaust fan','each',450,true),
-      it('warm_prep','Floor warming prep','sq ft',6,true),
-      it('waterproof','Waterproofing membrane','sq ft',9,true),
-      it('shower_tile','Shower tile — material & set','sq ft',19,true),
-      it('toilet2','ADA / comfort-height toilet','each',550,true),
-      it('vanity2','Double vanity','each',1900,true),
-      it('custom_dbl_vanity','Custom double-vanity upgrade','each',3200,false),
-      it('med_cab','Recessed medicine cabinets','each',320,false),
-      it('shower_bench','Custom shower bench','each',650,false),
-      it('walk_tub','Walk-in / soaking tub','each',3600,false),
-      it('glass_enc','Frameless glass enclosure','each',1400,false),
-      it('heated_floor','Heated floor mat','sq ft',16,false),
-      it('grab_bars','Grab bar package','each',650,false)
+      it('floor_tile','Flooring — porcelain tile, set','sq ft',16,true,'Tile & Waterproofing'),
+      it('shower_frame','Shower curb / niche framing','each',400,true,'Framing'),
+      it('plumb_full','Full plumbing rough-ins','each',3200,true,'Plumbing'),
+      it('high_fan','High-CFM exhaust fan','each',450,true,'HVAC'),
+      it('warm_prep','Floor warming prep','sq ft',6,true,'Electrical'),
+      it('waterproof','Waterproofing membrane','sq ft',9,true,'Tile & Waterproofing'),
+      it('walk_shower','Walk-in tiled shower — material & set','sq ft',19,true,'Tile & Waterproofing'),
+      it('toilet2','ADA / comfort-height toilet','each',550,true,'Plumbing'),
+      it('vanity2','Double vanity','each',1900,true,'Cabinetry & Built-Ins'),
+      it('vanity1','Single-sink vanity','each',1200,false,'Cabinetry & Built-Ins'),
+      it('linen','Linen closet','each',650,false,'Cabinetry & Built-Ins'),
+      it('mirror','Mirror / medicine cabinet','each',320,false,'Fixtures & Appliances'),
+      it('custom_dbl_vanity','Custom double-vanity upgrade','each',3200,false,'Cabinetry & Built-Ins'),
+      it('shower_bench','Custom shower bench','each',650,false,'Tile & Waterproofing'),
+      it('soaking_tub','Soaking / freestanding tub','each',2600,false,'Plumbing'),
+      it('walk_tub','Walk-in tub (accessible)','each',6500,false,'Plumbing'),
+      it('glass_enc','Frameless glass enclosure','each',1400,false,'Fixtures & Appliances'),
+      it('heated_floor','Heated floor mat','sq ft',16,false,'Electrical'),
+      it('grab_bars','Grab bar package','each',650,false,'Fixtures & Appliances')
     ]));
   // ---- KITCHEN & BEVERAGE ----
+  C.kitchen=cat('Kitchen','Kitchen & Beverage Areas',
+    ['Framing','Rough Plumbing','Electrical','HVAC','Drywall','Cabinetry','Countertops','Paint','Flooring'],
+    base().concat([
+      it('floor','Flooring — tile / LVP','sq ft',8,true,'Flooring'),
+      it('kit_plumb','Plumbing rough-in','each',1600,true,'Plumbing'),
+      it('cabinets','Cabinetry (base + upper)','linear ft',350,true,'Cabinetry & Built-Ins'),
+      it('counter','Countertop','sq ft',65,true,'Countertops'),
+      it('sink','Sink & faucet','each',700,true,'Plumbing'),
+      it('range_hood','Range hood / vent','each',650,true,'HVAC'),
+      it('appliance','Appliance installation','each',900,true,'Fixtures & Appliances'),
+      it('island','Kitchen island','each',3800,false,'Cabinetry & Built-Ins'),
+      it('backsplash','Backsplash tile','sq ft',22,false,'Tile & Waterproofing'),
+      it('pantry','Pantry','each',1600,false,'Cabinetry & Built-Ins'),
+      it('uc_light','Under-cabinet lighting','linear ft',35,false,'Electrical'),
+      it('pot_filler','Pot filler faucet','each',450,false,'Plumbing')
+    ]));
   C.drybar=cat('Dry Bar','Kitchen & Beverage Areas',
     ['Framing','Electrical','HVAC','Drywall','Cabinetry / Finish Carpentry','Countertops','Paint','Flooring'],
     base().concat([
-      it('floor','Flooring — LVP / tile','sq ft',6,true),
-      it('cab_block','Cabinet blocking','each',250,true),
-      it('gfci','GFCI outlets','each',220,true),
-      it('uc_wire','Under-cabinet lighting wire prep','each',200,true),
-      it('bev_outlet','Beverage fridge outlet','each',180,true),
-      it('cab_custom','Custom upper / lower cabinetry','linear ft',350,false),
-      it('float_display','Open floating display shelves','each',180,false),
-      it('stemware','Stemware racks','each',300,false)
+      it('floor','Flooring — LVP / tile','sq ft',6,true,'Flooring'),
+      it('cab_block','Cabinet blocking','each',250,true,'Framing'),
+      it('gfci','GFCI outlets','each',220,true,'Electrical'),
+      it('uc_wire','Under-cabinet lighting wire prep','each',200,true,'Electrical'),
+      it('bev_outlet','Beverage fridge outlet','each',180,true,'Electrical'),
+      it('cab_custom','Custom upper / lower cabinetry','linear ft',350,false,'Cabinetry & Built-Ins'),
+      it('drybar_counter','Countertop','sq ft',65,false,'Countertops'),
+      it('float_display','Open floating display shelves','each',180,false,'Cabinetry & Built-Ins'),
+      it('stemware','Stemware racks','each',300,false,'Cabinetry & Built-Ins')
     ]));
   C.wetbar=cat('Wet Bar / Kitchenette','Kitchen & Beverage Areas',
     ['Framing','Rough Plumbing','Electrical','HVAC','Drywall','Cabinetry / Finish Carpentry','Countertops','Paint','Flooring'],
     base().concat([
-      it('floor','Flooring — LVP / tile','sq ft',6,true),
-      it('sink_lines','Sink drain & supply lines','each',900,true),
-      it('appl_lines','Ice maker / dishwasher lines','each',450,true),
-      it('appl_circuit','20A dedicated appliance circuits','each',350,true),
-      it('counter','Countertop','sq ft',65,true),
-      it('cab_base','Base + upper cabinetry','linear ft',350,true),
-      it('sink','Bar sink & faucet','each',700,true),
-      it('bar_island','Custom bar island','each',3800,false),
-      it('wine_grid','Built-in wine grid','each',700,false),
-      it('bar_seat','Bar-top seating ledge','linear ft',260,false)
+      it('floor','Flooring — LVP / tile','sq ft',6,true,'Flooring'),
+      it('sink_lines','Sink drain & supply lines','each',900,true,'Plumbing'),
+      it('appl_lines','Ice maker / dishwasher lines','each',450,true,'Plumbing'),
+      it('appl_circuit','20A dedicated appliance circuits','each',350,true,'Electrical'),
+      it('counter','Countertop','sq ft',65,true,'Countertops'),
+      it('cab_base','Base + upper cabinetry','linear ft',350,true,'Cabinetry & Built-Ins'),
+      it('sink','Bar sink & faucet','each',700,true,'Plumbing'),
+      it('bar_island','Custom bar island','each',3800,false,'Cabinetry & Built-Ins'),
+      it('wine_grid','Built-in wine grid','each',700,false,'Cabinetry & Built-Ins'),
+      it('bar_seat','Bar-top seating ledge','linear ft',260,false,'Finish Carpentry')
     ]));
   // ---- FUNCTIONAL & WORK ----
   C.office=cat('Home Office','Functional & Work Spaces',
     ['Framing','Sound Insulation','Electrical & Low Voltage','HVAC','Drywall','Finish Carpentry','Paint','Flooring'],
     base().concat([
-      it('floor','Flooring — LVP / carpet','sq ft',5.5,true),
-      it('sound_batt','Sound insulation batts','sq ft',1.75,true),
-      it('quad_outlet','Quad outlets at desk level','each',260,true),
-      it('data_drop','Dual Cat6 data drops','each',300,true),
-      it('dual_desk','Built-in dual desk unit','linear ft',400,false),
-      it('file_draw','File storage drawers','each',350,false),
-      it('bookcase','Upper bookcases','linear ft',300,false),
-      it('wire_mgmt','Wire management','each',250,false)
+      it('floor','Flooring — LVP / carpet','sq ft',5.5,true,'Flooring'),
+      it('sound_batt','Sound insulation batts','sq ft',1.75,true,'Insulation'),
+      it('quad_outlet','Quad outlets at desk level','each',260,true,'Electrical'),
+      it('data_drop','Dual Cat6 data drops','each',300,true,'Electrical'),
+      it('dual_desk','Built-in dual desk unit','linear ft',400,false,'Cabinetry & Built-Ins'),
+      it('file_draw','File storage drawers','each',350,false,'Cabinetry & Built-Ins'),
+      it('bookcase','Upper bookcases','linear ft',300,false,'Cabinetry & Built-Ins'),
+      it('wire_mgmt','Wire management','each',250,false,'Electrical')
     ]));
   C.gym=cat('Home Gym / Exercise Room','Functional & Work Spaces',
     ['Framing','Electrical','HVAC','Drywall','Glass & Mirror','Finish Carpentry','Paint','Specialty Flooring'],
     base().concat([
-      it('rubber_floor','Specialty rubber flooring','sq ft',7,true),
-      it('equip_back','Heavy equipment wall backing','each',400,true),
-      it('circuit20','20A dedicated circuits','each',350,true),
-      it('high_light','High-output lighting','each',900,true),
-      it('mirror_wall','Floor-to-ceiling mirror surrounds','sq ft',18,false),
-      it('equip_rack','Custom equipment storage racks','linear ft',260,false),
-      it('rubber_trim','Rubber floor trim','linear ft',9,false)
+      it('rubber_floor','Specialty rubber flooring','sq ft',7,true,'Flooring'),
+      it('equip_back','Heavy equipment wall backing','each',400,true,'Framing'),
+      it('circuit20','20A dedicated circuits','each',350,true,'Electrical'),
+      it('high_light','High-output lighting','each',900,true,'Electrical'),
+      it('mirror_wall','Floor-to-ceiling mirror surrounds','sq ft',18,false,'Fixtures & Appliances'),
+      it('equip_rack','Custom equipment storage racks','linear ft',260,false,'Cabinetry & Built-Ins'),
+      it('rubber_trim','Rubber floor trim','linear ft',9,false,'Flooring')
     ]));
   // ---- SPECIALTY ----
   C.golf=cat('Golf Simulator Room','Specialty & Custom Features',
     ['Framing','Electrical & Low Voltage','HVAC','Drywall','Finish Carpentry','Turf / Specialty Flooring'],
     base().concat([
-      it('turf','Turf / specialty flooring','sq ft',9,true),
-      it('tall_frame','Extended ceiling-height framing','sq ft',5,true),
-      it('proj_circuit','Projector / launch monitor circuits','each',900,true),
-      it('impact_pad','Impact-enclosure wall padding','sq ft',22,false),
-      it('sim_desk','Built-in simulator console desk','each',1800,false)
+      it('turf','Turf / specialty flooring','sq ft',9,true,'Flooring'),
+      it('tall_frame','Extended ceiling-height framing','sq ft',5,true,'Framing'),
+      it('proj_circuit','Projector / launch monitor circuits','each',900,true,'Electrical'),
+      it('impact_pad','Impact-enclosure wall padding','sq ft',22,false,'Finish Carpentry'),
+      it('sim_desk','Built-in simulator console desk','each',1800,false,'Cabinetry & Built-Ins')
     ]));
   C.understair=cat('Under-Stair Hideaway','Specialty & Custom Features',
     ['Framing','Electrical','Drywall','Finish Carpentry','Paint','Flooring'],
     base().concat([
-      it('floor','Flooring — LVP / carpet','sq ft',5.5,true),
-      it('door_header','Door header modifications','each',450,true),
-      it('light_box','Interior light box','each',180,true),
-      it('hidden_bookcase','Hidden bookcase door','each',1600,false),
-      it('pullout_draw','Pull-out storage drawers','each',350,false),
-      it('pet_kennel','Built-in pet kennel enclosure','each',1200,false)
+      it('floor','Flooring — LVP / carpet','sq ft',5.5,true,'Flooring'),
+      it('door_header','Door header modifications','each',450,true,'Framing'),
+      it('light_box','Interior light box','each',180,true,'Electrical'),
+      it('hidden_bookcase','Hidden bookcase door','each',1600,false,'Cabinetry & Built-Ins'),
+      it('pullout_draw','Pull-out storage drawers','each',350,false,'Cabinetry & Built-Ins'),
+      it('pet_kennel','Built-in pet kennel enclosure','each',1200,false,'Cabinetry & Built-Ins')
     ]));
   // ---- STORAGE & UTILITY ----
   C.mechanical=cat('Mechanical Room (Enclosed)','Storage & Utility',
     ['Framing','Electrical','HVAC','Drywall','Finish Carpentry','Paint'],
     base().concat([
-      it('partition','Partition wall & fire-blocking','sq ft',7,true),
-      it('service_light','Equipment service lighting','each',300,true),
-      it('drain_access','Floor drain access','each',350,true),
-      it('pegboard','Wall-mounted pegboard','each',300,false),
-      it('access_panel','Custom access panels','each',250,false)
+      it('partition','Partition wall & fire-blocking','sq ft',7,true,'Framing'),
+      it('service_light','Equipment service lighting','each',300,true,'Electrical'),
+      it('drain_access','Floor drain access','each',350,true,'Plumbing'),
+      it('pegboard','Wall-mounted pegboard','each',300,false,'Cabinetry & Built-Ins'),
+      it('access_panel','Custom access panels','each',250,false,'Finish Carpentry')
     ]));
   C.storage=cat('Unfinished Storage Room','Storage & Utility',
     ['Framing','Electrical','HVAC','Drywall (optional fire-tape)','Finish Carpentry'],
     [
-      it('perim_frame','Perimeter wall framing','sq ft',7,true),
-      it('oh_light','Overhead lighting','each',300,true),
-      it('outlet_basic','Basic outlet placement','each',180,true),
-      it('drywall_tape','Drywall — fire-tape (optional)','sq ft',2.5,true),
-      it('heavy_shelf','Floor-to-ceiling heavy-duty wood shelving','linear ft',180,false),
-      it('workbench','Built-in workbenches','linear ft',220,false)
+      it('perim_frame','Perimeter wall framing','sq ft',7,true,'Framing'),
+      it('oh_light','Overhead lighting','each',300,true,'Electrical'),
+      it('outlet_basic','Basic outlet placement','each',180,true,'Electrical'),
+      it('drywall_tape','Drywall — fire-tape (optional)','sq ft',2.5,true,'Drywall'),
+      it('heavy_shelf','Floor-to-ceiling heavy-duty wood shelving','linear ft',180,false,'Cabinetry & Built-Ins'),
+      it('workbench','Built-in workbenches','linear ft',220,false,'Cabinetry & Built-Ins')
     ]);
   C.garage=cat('Garage / Attached Workshop','Storage & Utility',
     ['Framing / Fire-Blocking','Insulation','Electrical (subpanel / 240V)','HVAC / Heater','Drywall (Type X)','Finish Carpentry','Paint','Epoxy / Specialty Flooring'],
     [
-      it('fire_frame','Framing & fire-blocking','sq ft',8,true),
-      it('insul','Insulation','sq ft',2.25,true),
-      it('subpanel','Electrical — subpanel / 240V','each',1800,true),
-      it('shop_circuit','Dedicated 20A shop circuits','each',350,true),
-      it('typex','Fire-rated Type X drywall — tape & finish','sq ft',3.75,true),
-      it('highbay','High-bay LED lighting','each',900,true),
-      it('unit_heater','Unit heater rough-in','each',1200,true),
-      it('access_door','Garage-to-house access door','each',650,true),
-      it('paint','Prime & paint','sq ft',2.75,true),
-      it('shop_cab','Floor-to-ceiling shop cabinetry / workbenches','linear ft',350,false),
-      it('slatwall','Wall-mounted Slatwall / pegboard','sq ft',14,false),
-      it('epoxy','Polyaspartic / epoxy floor coating','sq ft',7,false),
-      it('dust_duct','Dust-collection ducting prep','each',900,false)
+      it('fire_frame','Framing & fire-blocking','sq ft',8,true,'Framing'),
+      it('insul','Insulation','sq ft',2.25,true,'Insulation'),
+      it('subpanel','Electrical — subpanel / 240V','each',1800,true,'Electrical'),
+      it('shop_circuit','Dedicated 20A shop circuits','each',350,true,'Electrical'),
+      it('typex','Fire-rated Type X drywall — tape & finish','sq ft',3.75,true,'Drywall'),
+      it('highbay','High-bay LED lighting','each',900,true,'Electrical'),
+      it('unit_heater','Unit heater rough-in','each',1200,true,'HVAC'),
+      it('access_door','Garage-to-house access door','each',650,true,'Finish Carpentry'),
+      it('paint','Prime & paint','sq ft',2.75,true,'Paint & Stain'),
+      it('shop_cab','Floor-to-ceiling shop cabinetry / workbenches','linear ft',350,false,'Cabinetry & Built-Ins'),
+      it('slatwall','Wall-mounted Slatwall / pegboard','sq ft',14,false,'Cabinetry & Built-Ins'),
+      it('epoxy','Polyaspartic / epoxy floor coating','sq ft',7,false,'Flooring'),
+      it('dust_duct','Dust-collection ducting prep','each',900,false,'HVAC')
     ]);
   // ---- BUILT-INS: LIVING & MEDIA ----
   C.fireplace=cat('Fireplace Surround & Flanking Bookcases','Built-Ins — Living & Media',
     ['Framing / Blocking','Electrical','Drywall','Finish Carpentry / Cabinetmaker','Countertop / Stone','Paint / Stain'],
     [
-      it('block','Framing / blocking','each',400,true),
-      it('elec_accent','Electrical — accent lights / TV / outlets','each',600,true),
-      it('drywall_chase','Drywall — chase / surround','each',500,true),
-      it('lower_cab','Lower storage cabinets (flat / Shaker)','linear ft',325,true),
-      it('upper_shelf','Upper open adjustable shelving','linear ft',180,true),
-      it('crown','Crown molding','linear ft',18,true),
-      it('hearth','Hearth / mantel slab','each',900,true),
-      it('paint_stain','Paint / stain','each',500,true),
-      it('led_channel','Integrated LED channel lighting','linear ft',22,false),
-      it('pilaster','Fluted / inset side pilasters','each',450,false),
-      it('mantel_custom','Custom mantel assembly','each',1200,false),
-      it('slat_panel','Slatted accent wall panels','sq ft',18,false),
-      it('cane_door','Inset mesh / cane door panels','each',300,false)
+      it('block','Framing / blocking','each',400,true,'Framing'),
+      it('elec_accent','Electrical — accent lights / TV / outlets','each',600,true,'Electrical'),
+      it('drywall_chase','Drywall — chase / surround','each',500,true,'Drywall'),
+      it('lower_cab','Lower storage cabinets (flat / Shaker)','linear ft',325,true,'Cabinetry & Built-Ins'),
+      it('upper_shelf','Upper open adjustable shelving','linear ft',180,true,'Cabinetry & Built-Ins'),
+      it('crown','Crown molding','linear ft',18,true,'Finish Carpentry'),
+      it('hearth','Hearth / mantel slab','each',900,true,'Countertops'),
+      it('paint_stain','Paint / stain','each',500,true,'Paint & Stain'),
+      it('led_channel','Integrated LED channel lighting','linear ft',22,false,'Electrical'),
+      it('pilaster','Fluted / inset side pilasters','each',450,false,'Finish Carpentry'),
+      it('mantel_custom','Custom mantel assembly','each',1200,false,'Cabinetry & Built-Ins'),
+      it('slat_panel','Slatted accent wall panels','sq ft',18,false,'Finish Carpentry'),
+      it('cane_door','Inset mesh / cane door panels','each',300,false,'Cabinetry & Built-Ins')
     ]);
   C.entcenter=cat('Entertainment Center / Media Wall','Built-Ins — Living & Media',
     ['Framing / Blocking','Electrical & Low Voltage','Drywall','Finish Carpentry / Cabinetmaker','Paint / Stain'],
     [
-      it('block','Framing / blocking','each',400,true),
-      it('lv_wire','Electrical & low-voltage wiring','each',600,true),
-      it('media_console','Base media console — soft-close doors','linear ft',400,true),
-      it('wire_chan','Component wire management channels','each',250,true),
-      it('tv_mount','Wall-backed TV mounting prep','each',300,true),
-      it('float_shelf','Floating display shelves','each',180,true),
-      it('paint_stain','Paint / stain','each',500,true),
-      it('slide_door','Concealed sliding doors to hide TV','each',1600,false),
-      it('speaker_grille','Acoustic fabric speaker grilles','each',400,false),
-      it('cooling_fan','Integrated AV cooling fans','each',300,false),
-      it('veneer_back','Book-matched hardwood veneer backs','sq ft',22,false)
+      it('block','Framing / blocking','each',400,true,'Framing'),
+      it('lv_wire','Electrical & low-voltage wiring','each',600,true,'Electrical'),
+      it('media_console','Base media console — soft-close doors','linear ft',400,true,'Cabinetry & Built-Ins'),
+      it('wire_chan','Component wire management channels','each',250,true,'Electrical'),
+      it('tv_mount','Wall-backed TV mounting prep','each',300,true,'Framing'),
+      it('float_shelf','Floating display shelves','each',180,true,'Cabinetry & Built-Ins'),
+      it('paint_stain','Paint / stain','each',500,true,'Paint & Stain'),
+      it('slide_door','Concealed sliding doors to hide TV','each',1600,false,'Cabinetry & Built-Ins'),
+      it('speaker_grille','Acoustic fabric speaker grilles','each',400,false,'Finish Carpentry'),
+      it('cooling_fan','Integrated AV cooling fans','each',300,false,'Electrical'),
+      it('veneer_back','Book-matched hardwood veneer backs','sq ft',22,false,'Cabinetry & Built-Ins')
     ]);
   // ---- BUILT-INS: OFFICE & WORK ----
   C.execdesk=cat('Executive / Dual Office Workstation','Built-Ins — Office & Work',
     ['Framing / Blocking','Electrical & Low Voltage','Finish Carpentry / Cabinetmaker','Countertop','Paint / Stain'],
     [
-      it('block','Framing / blocking','each',350,true),
-      it('desk_elec','Desk-height outlets & Cat6','each',450,true),
-      it('desktop','Built-in desktop (veneer / laminate)','linear ft',300,true),
-      it('pencil_draw','Pencil drawers','each',180,true),
-      it('file_draw','Lower file cabinet drawers','each',300,true),
-      it('upper_book','Upper open bookcase units','linear ft',280,true),
-      it('paint_stain','Paint / stain','each',400,true),
-      it('waterfall','Solid hardwood waterfall desktop edge','each',900,false),
-      it('wireless_charge','Integrated wireless charging pads','each',180,false),
-      it('popup_power','Concealed pop-up power towers','each',350,false),
-      it('dovetail_draw','Soft-close dovetailed drawers','each',280,false),
-      it('task_led','Under-desk LED task lighting','linear ft',18,false)
+      it('block','Framing / blocking','each',350,true,'Framing'),
+      it('desk_elec','Desk-height outlets & Cat6','each',450,true,'Electrical'),
+      it('desktop','Built-in desktop (veneer / laminate)','linear ft',300,true,'Cabinetry & Built-Ins'),
+      it('pencil_draw','Pencil drawers','each',180,true,'Cabinetry & Built-Ins'),
+      it('file_draw','Lower file cabinet drawers','each',300,true,'Cabinetry & Built-Ins'),
+      it('upper_book','Upper open bookcase units','linear ft',280,true,'Cabinetry & Built-Ins'),
+      it('paint_stain','Paint / stain','each',400,true,'Paint & Stain'),
+      it('waterfall','Solid hardwood waterfall desktop edge','each',900,false,'Countertops'),
+      it('wireless_charge','Integrated wireless charging pads','each',180,false,'Electrical'),
+      it('popup_power','Concealed pop-up power towers','each',350,false,'Electrical'),
+      it('dovetail_draw','Soft-close dovetailed drawers','each',280,false,'Cabinetry & Built-Ins'),
+      it('task_led','Under-desk LED task lighting','linear ft',18,false,'Electrical')
     ]);
   C.studynook=cat('Study Nook / Homework Station','Built-Ins — Office & Work',
     ['Framing / Blocking','Electrical','Finish Carpentry / Cabinetmaker','Paint / Stain'],
     [
-      it('block','Framing / blocking','each',250,true),
-      it('elec','Electrical outlets','each',260,true),
-      it('desk_surface','Wall-to-wall desk surface','linear ft',260,true),
-      it('cubby','Upper cubbies / floating shelves','linear ft',180,true),
-      it('grommet','Cord pass-through grommets','each',60,true),
-      it('paint_stain','Paint / stain','each',300,true),
-      it('corkboard','Corkboard / magnetic whiteboard backer','sq ft',14,false),
-      it('secretary','Drop-front secretary desk unit','each',900,false),
-      it('draw_org','Built-in drawer organizers','each',180,false)
+      it('block','Framing / blocking','each',250,true,'Framing'),
+      it('elec','Electrical outlets','each',260,true,'Electrical'),
+      it('desk_surface','Wall-to-wall desk surface','linear ft',260,true,'Cabinetry & Built-Ins'),
+      it('cubby','Upper cubbies / floating shelves','linear ft',180,true,'Cabinetry & Built-Ins'),
+      it('grommet','Cord pass-through grommets','each',60,true,'Finish Carpentry'),
+      it('paint_stain','Paint / stain','each',300,true,'Paint & Stain'),
+      it('corkboard','Corkboard / magnetic whiteboard backer','sq ft',14,false,'Finish Carpentry'),
+      it('secretary','Drop-front secretary desk unit','each',900,false,'Cabinetry & Built-Ins'),
+      it('draw_org','Built-in drawer organizers','each',180,false,'Cabinetry & Built-Ins')
     ]);
   // ---- BUILT-INS: ENTRY & STORAGE ----
   C.mudroom=cat('Mudroom Lockers & Entry Hall Tree','Built-Ins — Entry & Storage',
     ['Framing / Blocking','Electrical','Finish Carpentry / Cabinetmaker','Paint / Stain'],
     [
-      it('block','Framing / blocking','each',300,true),
-      it('charge_outlet','Outlet / charging station','each',180,true),
-      it('locker','Open locker cubbies','linear ft',300,true),
-      it('bench','Shoe storage bench','linear ft',260,true),
-      it('hooks','Coat hooks','each',120,true),
-      it('upper_cubby','Top open cubbies','linear ft',180,true),
-      it('paint_stain','Paint / stain','each',350,true),
-      it('butcher_bench','Integrated butcher-block bench top','each',700,false),
-      it('shoe_draw','Pull-out shoe drawers','each',350,false),
-      it('shiplap_back','Beadboard / shiplap backing','sq ft',14,false),
-      it('upper_enclosed','Enclosed upper cabinets w/ lift-up hinges','linear ft',350,false)
+      it('block','Framing / blocking','each',300,true,'Framing'),
+      it('charge_outlet','Outlet / charging station','each',180,true,'Electrical'),
+      it('locker','Open locker cubbies','linear ft',300,true,'Cabinetry & Built-Ins'),
+      it('bench','Shoe storage bench','linear ft',260,true,'Cabinetry & Built-Ins'),
+      it('hooks','Coat hooks','each',120,true,'Finish Carpentry'),
+      it('upper_cubby','Top open cubbies','linear ft',180,true,'Cabinetry & Built-Ins'),
+      it('paint_stain','Paint / stain','each',350,true,'Paint & Stain'),
+      it('butcher_bench','Integrated butcher-block bench top','each',700,false,'Countertops'),
+      it('shoe_draw','Pull-out shoe drawers','each',350,false,'Cabinetry & Built-Ins'),
+      it('shiplap_back','Beadboard / shiplap backing','sq ft',14,false,'Finish Carpentry'),
+      it('upper_enclosed','Enclosed upper cabinets w/ lift-up hinges','linear ft',350,false,'Cabinetry & Built-Ins')
     ]);
   C.closet=cat('Walk-In Closet / Dressing Room System','Built-Ins — Entry & Storage',
     ['Framing / Blocking','Electrical','Drywall','Finish Carpentry / Cabinetmaker','Paint / Stain'],
     [
-      it('block','Framing / blocking','each',300,true),
-      it('puck_light','Puck / strip lighting','each',300,true),
-      it('drywall','Drywall','each',500,true),
-      it('hang_rod','Double & single hanging rod sections','linear ft',150,true),
-      it('shoe_shelf','Adjustable shoe shelves','linear ft',120,true),
-      it('draw_island','5-drawer center island / drawer stack','each',1800,true),
-      it('paint_stain','Paint / stain','each',350,true),
-      it('jewelry_draw','Glass-front jewelry display drawers','each',450,false),
-      it('valet','Pull-out valet / belt / tie racks','each',300,false),
-      it('hamper','Tilt-out hamper baskets','each',260,false),
-      it('led_shoe','LED-lit shoe displays','linear ft',35,false),
-      it('mirror_door','Full-length mirror door inserts','each',400,false)
+      it('block','Framing / blocking','each',300,true,'Framing'),
+      it('puck_light','Puck / strip lighting','each',300,true,'Electrical'),
+      it('drywall','Drywall','each',500,true,'Drywall'),
+      it('hang_rod','Double & single hanging rod sections','linear ft',150,true,'Cabinetry & Built-Ins'),
+      it('shoe_shelf','Adjustable shoe shelves','linear ft',120,true,'Cabinetry & Built-Ins'),
+      it('draw_island','5-drawer center island / drawer stack','each',1800,true,'Cabinetry & Built-Ins'),
+      it('paint_stain','Paint / stain','each',350,true,'Paint & Stain'),
+      it('jewelry_draw','Glass-front jewelry display drawers','each',450,false,'Cabinetry & Built-Ins'),
+      it('valet','Pull-out valet / belt / tie racks','each',300,false,'Cabinetry & Built-Ins'),
+      it('hamper','Tilt-out hamper baskets','each',260,false,'Cabinetry & Built-Ins'),
+      it('led_shoe','LED-lit shoe displays','linear ft',35,false,'Electrical'),
+      it('mirror_door','Full-length mirror door inserts','each',400,false,'Fixtures & Appliances')
     ]);
   // ---- BUILT-INS: DINING & ACCENT ----
   C.dining=cat('Dining Buffet / Banquette Seating','Built-Ins — Dining & Accent',
     ['Framing / Blocking','Electrical','Finish Carpentry / Cabinetmaker','Countertop','Paint / Stain','Upholstery'],
     [
-      it('block','Framing / blocking','each',300,true),
-      it('elec','Electrical','each',220,true),
-      it('base_cab','Built-in perimeter base cabinets','linear ft',325,true),
-      it('stone_cap','Solid top / stone cap','sq ft',65,true),
-      it('glass_upper','Upper glass-frame display cabinets','linear ft',350,true),
-      it('banquette','Wall banquette bench w/ flip-up storage','linear ft',300,true),
-      it('paint_stain','Paint / stain','each',400,true),
-      it('curved_bench','Custom radius / curved bench seating','linear ft',400,false),
-      it('under_draw','Integrated drawer storage under bench','each',350,false),
-      it('puck','Interior glass-cabinet puck lighting','each',300,false),
-      it('mirror_back','Mirror-backed display uppers','each',400,false)
+      it('block','Framing / blocking','each',300,true,'Framing'),
+      it('elec','Electrical','each',220,true,'Electrical'),
+      it('base_cab','Built-in perimeter base cabinets','linear ft',325,true,'Cabinetry & Built-Ins'),
+      it('stone_cap','Solid top / stone cap','sq ft',65,true,'Countertops'),
+      it('glass_upper','Upper glass-frame display cabinets','linear ft',350,true,'Cabinetry & Built-Ins'),
+      it('banquette','Wall banquette bench w/ flip-up storage','linear ft',300,true,'Finish Carpentry'),
+      it('paint_stain','Paint / stain','each',400,true,'Paint & Stain'),
+      it('curved_bench','Custom radius / curved bench seating','linear ft',400,false,'Finish Carpentry'),
+      it('under_draw','Integrated drawer storage under bench','each',350,false,'Cabinetry & Built-Ins'),
+      it('puck','Interior glass-cabinet puck lighting','each',300,false,'Electrical'),
+      it('mirror_back','Mirror-backed display uppers','each',400,false,'Fixtures & Appliances')
     ]);
   C.accentwall=cat('Accent Walls & Architectural Paneling','Built-Ins — Dining & Accent',
     ['Framing / Blocking','Electrical','Drywall','Finish Carpentry','Paint / Stain'],
     [
-      it('block','Framing / blocking','each',250,true),
-      it('box_ext','Switch / outlet box extensions','each',120,true),
-      it('drywall','Drywall','each',400,true),
-      it('panel','Wainscoting / board & batten / picture-frame molding','sq ft',14,true),
-      it('paint_stain','Paint / stain','sq ft',3,true),
-      it('geo_wall','Custom geometric wood feature wall','sq ft',22,false),
-      it('slat_wall','Full-height white oak / walnut slat wall','sq ft',26,false),
-      it('hidden_door','Integrated hidden door flush with paneling','each',1600,false)
+      it('block','Framing / blocking','each',250,true,'Framing'),
+      it('box_ext','Switch / outlet box extensions','each',120,true,'Electrical'),
+      it('drywall','Drywall','each',400,true,'Drywall'),
+      it('panel','Wainscoting / board & batten / picture-frame molding','sq ft',14,true,'Finish Carpentry'),
+      it('paint_stain','Paint / stain','sq ft',3,true,'Paint & Stain'),
+      it('geo_wall','Custom geometric wood feature wall','sq ft',22,false,'Finish Carpentry'),
+      it('slat_wall','Full-height white oak / walnut slat wall','sq ft',26,false,'Finish Carpentry'),
+      it('hidden_door','Integrated hidden door flush with paneling','each',1600,false,'Cabinetry & Built-Ins')
     ]);
   // ---- BUILT-INS: BEDROOM & NOOK ----
   C.windowseat=cat('Window Seats & Reading Nooks','Built-Ins — Bedroom & Nook',
     ['Framing / Blocking','Electrical','Finish Carpentry / Cabinetmaker','Paint / Stain'],
     [
-      it('block','Framing / blocking','each',300,true),
-      it('read_light','Reading lights / outlets','each',220,true),
-      it('bench_box','Framed bench box under window','linear ft',260,true),
-      it('lid_storage','Lift-up seat lid / storage drawers','each',350,true),
-      it('top_cap','Simple top cap','each',180,true),
-      it('paint_stain','Paint / stain','each',300,true),
-      it('flank_book','Flanking floor-to-ceiling bookcases','linear ft',300,false),
-      it('arch_valance','Arched top valances','each',450,false),
-      it('sconce_prep','Dimmable sconce wire prep','each',180,false),
-      it('hardwood_top','Butcher-block / stained hardwood top','each',400,false)
+      it('block','Framing / blocking','each',300,true,'Framing'),
+      it('read_light','Reading lights / outlets','each',220,true,'Electrical'),
+      it('bench_box','Framed bench box under window','linear ft',260,true,'Finish Carpentry'),
+      it('lid_storage','Lift-up seat lid / storage drawers','each',350,true,'Cabinetry & Built-Ins'),
+      it('top_cap','Simple top cap','each',180,true,'Finish Carpentry'),
+      it('paint_stain','Paint / stain','each',300,true,'Paint & Stain'),
+      it('flank_book','Flanking floor-to-ceiling bookcases','linear ft',300,false,'Cabinetry & Built-Ins'),
+      it('arch_valance','Arched top valances','each',450,false,'Finish Carpentry'),
+      it('sconce_prep','Dimmable sconce wire prep','each',180,false,'Electrical'),
+      it('hardwood_top','Butcher-block / stained hardwood top','each',400,false,'Countertops')
     ]);
   C.murphy=cat('Murphy Bed / Wall Bed System','Built-Ins — Bedroom & Nook',
     ['Framing / Blocking (structural)','Electrical','Finish Carpentry / Cabinetmaker','Paint / Stain'],
     [
-      it('anchor','Heavy structural anchoring / blocking','each',450,true),
-      it('elec_head','Headboard outlets / reading lights','each',260,true),
-      it('mechanism','Counter-balanced fold-down bed mechanism','each',2200,true),
-      it('face_panel','Faux cabinet door face panel','each',700,true),
-      it('paint_stain','Paint / stain','each',400,true),
-      it('wardrobe_tower','Integrated side wardrobe towers','linear ft',350,false),
-      it('drop_desk','Drop-down desk attachment','each',900,false),
-      it('auto_switch','Auto-shutoff safety light switches','each',180,false)
+      it('anchor','Heavy structural anchoring / blocking','each',450,true,'Framing'),
+      it('elec_head','Headboard outlets / reading lights','each',260,true,'Electrical'),
+      it('mechanism','Counter-balanced fold-down bed mechanism','each',2200,true,'Cabinetry & Built-Ins'),
+      it('face_panel','Faux cabinet door face panel','each',700,true,'Cabinetry & Built-Ins'),
+      it('paint_stain','Paint / stain','each',400,true,'Paint & Stain'),
+      it('wardrobe_tower','Integrated side wardrobe towers','linear ft',350,false,'Cabinetry & Built-Ins'),
+      it('drop_desk','Drop-down desk attachment','each',900,false,'Cabinetry & Built-Ins'),
+      it('auto_switch','Auto-shutoff safety light switches','each',180,false,'Electrical')
     ]);
   // ---- TRADES / SERVICES (all optional line items, no standard scope) ----
   C.landscaping=cat('Landscaping','Trades / Services',['Landscaping'],[
-    it('sod','Sod / turf install','sq ft',1.75,false),
-    it('paver','Paver patio / hardscape','sq ft',16,false),
-    it('retaining','Retaining wall','face sq ft',38,false),
-    it('firepit','Fire pit','each',1800,false),
-    it('pergola_ls','Pergola','sq ft',55,false),
-    it('irrigation','Sprinkler / irrigation','zone',650,false),
-    it('planting','Planting beds & mulch','sq ft',6,false),
-    it('gravel','Gravel / rock ground cover','sq ft',3.25,false),
-    it('outdoorkitchen','Outdoor kitchen','each',9500,false)
+    it('sod','Sod / turf install','sq ft',1.75,false,'Landscaping'),
+    it('paver','Paver patio / hardscape','sq ft',16,false,'Landscaping'),
+    it('retaining','Retaining wall','face sq ft',38,false,'Landscaping'),
+    it('firepit','Fire pit','each',1800,false,'Landscaping'),
+    it('pergola_ls','Pergola','sq ft',55,false,'Landscaping'),
+    it('irrigation','Sprinkler / irrigation','zone',650,false,'Landscaping'),
+    it('planting','Planting beds & mulch','sq ft',6,false,'Landscaping'),
+    it('gravel','Gravel / rock ground cover','sq ft',3.25,false,'Landscaping'),
+    it('outdoorkitchen','Outdoor kitchen','each',9500,false,'Landscaping')
   ]);
   C.woodworking=cat('Custom Woodworking / Built-Ins','Trades / Services',['Finish Carpentry'],[
-    it('builtin','Built-in cabinetry','linear ft',325,false),
-    it('media','Entertainment / media wall','linear ft',400,false),
-    it('accent','Accent wall (shiplap / B&B / geometric)','sq ft',14,false),
-    it('shelves','Floating shelves','each',180,false),
-    it('closet','Closet system','linear ft',210,false),
-    it('mantel','Fireplace surround / mantel','each',2200,false),
-    it('wainscoting','Wainscoting / trim','sq ft',12,false),
-    it('furniture','Custom furniture piece','each',1400,false)
+    it('builtin','Built-in cabinetry','linear ft',325,false,'Cabinetry & Built-Ins'),
+    it('media','Entertainment / media wall','linear ft',400,false,'Cabinetry & Built-Ins'),
+    it('accent','Accent wall (shiplap / B&B / geometric)','sq ft',14,false,'Finish Carpentry'),
+    it('shelves','Floating shelves','each',180,false,'Cabinetry & Built-Ins'),
+    it('closet','Closet system','linear ft',210,false,'Cabinetry & Built-Ins'),
+    it('mantel','Fireplace surround / mantel','each',2200,false,'Cabinetry & Built-Ins'),
+    it('wainscoting','Wainscoting / trim','sq ft',12,false,'Finish Carpentry'),
+    it('furniture','Custom furniture piece','each',1400,false,'Cabinetry & Built-Ins')
   ]);
   C.construction=cat('General Construction','Trades / Services',['General Construction'],[
-    it('framing','Framing','sq ft',9,false),
-    it('drywall','Drywall (hang & finish)','sq ft',3,false),
-    it('door','Interior door (install)','each',350,false),
-    it('window','Window (install)','each',600,false),
-    it('paint','Interior paint','sq ft',2.75,false),
-    it('trim','Baseboard / trim','linear ft',6.5,false),
-    it('demo','Demolition','sq ft',4.5,false),
-    it('labor','General labor','hour',65,false)
+    it('framing','Framing','sq ft',9,false,'Framing'),
+    it('drywall','Drywall (hang & finish)','sq ft',3,false,'Drywall'),
+    it('door','Interior door (install)','each',350,false,'Finish Carpentry'),
+    it('window','Window (install)','each',600,false,'Finish Carpentry'),
+    it('paint','Interior paint','sq ft',2.75,false,'Paint & Stain'),
+    it('trim','Baseboard / trim','linear ft',6.5,false,'Finish Carpentry'),
+    it('demo','Demolition','sq ft',4.5,false,'General'),
+    it('labor','General labor','hour',65,false,'General')
   ]);
   C.concrete=cat('Concrete','Trades / Services',['Concrete'],[
-    it('flatwork','Concrete flatwork (slab / patio / driveway)','sq ft',8,false),
-    it('stamped','Stamped / decorative concrete','sq ft',14,false),
-    it('footing','Footings / foundation','linear ft',42,false),
-    it('sidewalk','Sidewalk / walkway','sq ft',9,false),
-    it('steps','Concrete steps','step',275,false),
-    it('removal','Concrete removal / haul','sq ft',3.5,false)
+    it('flatwork','Concrete flatwork (slab / patio / driveway)','sq ft',8,false,'Concrete'),
+    it('stamped','Stamped / decorative concrete','sq ft',14,false,'Concrete'),
+    it('footing','Footings / foundation','linear ft',42,false,'Concrete'),
+    it('sidewalk','Sidewalk / walkway','sq ft',9,false,'Concrete'),
+    it('steps','Concrete steps','step',275,false,'Concrete'),
+    it('removal','Concrete removal / haul','sq ft',3.5,false,'Concrete')
   ]);
-  C.basement=cat('Basement Finishing (general)','Trades / Services',['Framing','Electrical','Drywall','Finish Carpentry','Flooring'],[
-    it('basefinish','Basement finish (frame + drywall + electrical)','sq ft',35,true),
-    it('flooring','Flooring (LVP / carpet / tile)','sq ft',5.5,false),
-    it('ceiling','Finished / drop ceiling','sq ft',4.25,false),
-    it('egress','Egress window & well','each',3200,false),
-    it('bathroom','Bathroom addition','each',9500,false),
-    it('wetbar','Wet bar','each',4200,false),
-    it('kitchen','Kitchen / kitchenette (full add-on)','each',18000,false),
-    it('bedroom','Bedroom (finish + closet)','each',3800,false)
+  C.basement=cat('Basement Finishing (general shell)','Trades / Services',['Framing','Electrical','Drywall','HVAC','Finish Carpentry','Flooring'],[
+    it('bf_frame','General framing','sq ft',9,true,'Framing'),
+    it('bf_elec','Electrical — outlets, switches & lighting','sq ft',6,true,'Electrical'),
+    it('bf_dry','Drywall — hang & finish','sq ft',4,true,'Drywall'),
+    it('bf_hvac','HVAC — supplies & returns','sq ft',3,true,'HVAC'),
+    it('bf_carp','Finish carpentry — base & casing','sq ft',2.5,false,'Finish Carpentry'),
+    it('bf_paint','Prime & paint','sq ft',2.75,false,'Paint & Stain'),
+    it('flooring','Flooring (LVP / carpet / tile)','sq ft',5.5,false,'Flooring'),
+    it('ceiling','Finished / drop ceiling','sq ft',4.25,false,'Drywall'),
+    it('egress','Egress window & well','each',3200,false,'Framing'),
+    it('bathroom','Bathroom addition','each',9500,false,'Plumbing'),
+    it('wetbar','Wet bar','each',4200,false,'Plumbing'),
+    it('kitchen','Kitchen / kitchenette (full add-on)','each',18000,false,'Cabinetry & Built-Ins'),
+    it('bedroom','Bedroom (finish + closet)','each',3800,false,'General')
   ]);
   return C;
 }
@@ -815,6 +847,9 @@ function round2(n){return Math.round(n*100)/100;}
 function fmtQty(q){return (Math.round(q*100)/100).toLocaleString("en-US");}
 
 /* ============================ CATALOG HELPERS ============================ */
+// sq-ft items that are NOT floor-area (so they don't auto-fill from room size)
+const NOSIZE_IDS={backsplash:1,walk_shower:1,waterproof:1,mirror_wall:1,acoustic_panel:1,veneer_back:1,slat_panel:1,impact_pad:1,corkboard:1,shiplap_back:1,slat_wall:1,geo_wall:1};
+function floorSized(it){return it && it.unit==='sq ft' && it.sub!=='Countertops' && !NOSIZE_IDS[it.id];}
 function catObj(k){return CFG.cats[k];}
 function catItems(k){return (CFG.cats[k]||{items:[]}).items;}
 function findItem(k,id){return catItems(k).find(i=>i.id===id);}
@@ -841,14 +876,15 @@ function addArea(){
 function autoStd(a){
   a.lines=[];
   catItems(a.catKey).filter(i=>i.std).forEach(i=>{
-    a.lines.push({id:nid(),itemId:i.id,qty:(i.unit==='sq ft'&&a.size?a.size:1),grade:'Standard',optional:false});
+    a.lines.push({id:nid(),itemId:i.id,qty:(floorSized(i)&&a.size?a.size:1),grade:'Standard',optional:false});
   });
 }
 function removeArea(aid){areas=areas.filter(a=>a.id!==aid);render();}
+function duplicateArea(aid){const a=areas.find(x=>x.id===aid);if(!a)return;const copy=clone(a);copy.id=nid();copy.name=a.name+" (copy)";copy.lines.forEach(l=>l.id=nid());areas.splice(areas.indexOf(a)+1,0,copy);render();}
 function setAreaField(aid,f,v){
   const a=areas.find(x=>x.id===aid);if(!a)return;
   if(f==='catKey'){a.catKey=v;a.size=hasStd(v)?(a.size||150):0;autoStd(a);}
-  else if(f==='size'){a.size=parseFloat(v)||0; a.lines.forEach(l=>{const it=findItem(a.catKey,l.itemId);if(it&&it.unit==='sq ft')l.qty=a.size;});}
+  else if(f==='size'){a.size=parseFloat(v)||0; a.lines.forEach(l=>{const it=findItem(a.catKey,l.itemId);if(floorSized(it))l.qty=a.size;});}
   else if(f==='name'){a.name=v;}
   render();
 }
@@ -858,7 +894,7 @@ function addLineFromPicker(aid){
   const itemId=sel.value; let qty=parseFloat(qEl.value);
   if(!itemId){toast("Pick an item first");return;}
   const it=findItem(a.catKey,itemId);
-  if(isNaN(qty)||qty<=0){qty=(it&&it.unit==='sq ft'&&a.size)?a.size:1;}
+  if(isNaN(qty)||qty<=0){qty=(floorSized(it)&&a.size)?a.size:1;}
   a.lines.push({id:nid(),itemId,qty,grade:gEl.value,optional:!it.std});
   render();
 }
@@ -932,6 +968,7 @@ function renderArea(a){
       <span class="badge add" style="margin:0">${esc(c.group.replace('Built-Ins — ','').replace(' Spaces','').replace(' Areas',''))}</span>
       <input class="area-name" value="${esc(a.name)}" onchange="setAreaField('${a.id}','name',this.value)">
       <span class="area-total">${money(inc)}</span>
+      <button class="icon-btn" title="Duplicate room" onclick="duplicateArea('${a.id}')">⧉</button>
       <button class="icon-btn" title="Remove" onclick="removeArea('${a.id}')">🗑</button>
     </div>
     <div class="area-body">
@@ -1109,6 +1146,15 @@ function generate(mode){
       <div class="r" style="color:var(--green)"><span>Gross Margin</span><span>${c.margin.toFixed(1)}%</span></div></div>`;
   }
 
+  // cost breakdown by sub-trade / material (included lines only)
+  const subTot={};
+  areas.forEach(a=>a.lines.filter(l=>!l.optional).forEach(l=>{const iu=findItem(a.catKey,l.itemId);if(!iu)return;const s=iu.sub||'General';subTot[s]=(subTot[s]||0)+lineCost(a,l)*factor;}));
+  const subSum=Object.values(subTot).reduce((x,y)=>x+y,0)||1;
+  let brRows=SUB_ORDER.filter(s=>subTot[s]>0.005).map(s=>`<tr><td>${esc(s)}</td><td class="r">${money(subTot[s])}</td><td class="r">${(subTot[s]/subSum*100).toFixed(0)}%</td></tr>`).join("");
+  brRows+=`<tr class="sub"><td>Total ${client?'':'Direct Cost'}</td><td class="r">${money(subSum)}</td><td class="r">100%</td></tr>`;
+  const breakdownBlock=`<div class="q-optional"><h3>Cost Breakdown by Trade &amp; Materials</h3><div class="note">How the ${client?'project price':'direct cost'} divides across subcontractors &amp; key materials${!client?' (before contingency & profit)':''}.</div>
+     <table class="q"><thead><tr><th>Trade / Material</th><th class="r">${client?'Amount':'Cost'}</th><th class="r">Share</th></tr></thead><tbody>${brRows}</tbody></table></div>`;
+
   const optionalBlock = (optionalRows)?`<div class="q-optional"><h3>Optional Add-Ons</h3><div class="note">Not included in the total above — provided for your consideration.</div>
      <table class="q"><thead><tr><th>Item</th><th class="c">Qty</th><th class="c">Unit</th><th class="r">Unit</th><th class="r">${client?'Price':'Cost'}</th></tr></thead><tbody>${optionalRows}</tbody></table></div>`:"";
 
@@ -1125,7 +1171,7 @@ function generate(mode){
 
   const doc=`<div class="quote-doc">${header}${title}${to}${basis}
     <table class="q"><thead><tr><th>Item / Description</th><th class="c">Qty</th><th class="c">Unit</th><th class="r">Unit ${client?'Price':'Cost'}</th><th class="r">Line Total</th></tr></thead>
-    <tbody>${rowsHtml}</tbody></table>${totals}${optionalBlock}${notes}${sign}</div>`;
+    <tbody>${rowsHtml}</tbody></table>${totals}${breakdownBlock}${optionalBlock}${notes}${sign}</div>`;
 
   const pa=document.getElementById("printArea");pa.innerHTML=doc;pa.style.display="block";
   document.getElementById("outModal").classList.add("open");
@@ -1150,6 +1196,10 @@ function copySummary(){
   t+=`PROJECT TOTAL: ${money(c.total)}\nDeposit to start (${r.deposit}%): ${money(c.deposit)}\n`;
   if(c.optional>0){t+=`\nOptional add-ons (not in total):\n`;
     areas.forEach(a=>a.lines.filter(l=>l.optional).forEach(l=>{const it=findItem(a.catKey,l.itemId);if(it)t+=`    + ${it.name} — ${money(lineCost(a,l)*c.clientFactor)}\n`;}));}
+  const subTot={};
+  areas.forEach(a=>a.lines.filter(l=>!l.optional).forEach(l=>{const iu=findItem(a.catKey,l.itemId);if(!iu)return;subTot[iu.sub]=(subTot[iu.sub]||0)+lineCost(a,l)*c.clientFactor;}));
+  const brk=SUB_ORDER.filter(s=>subTot[s]>0.005);
+  if(brk.length){t+=`\nCost breakdown by trade:\n`;brk.forEach(s=>{t+=`    ${s}: ${money(subTot[s])}\n`;});}
   t+=`\n${b.phone} · ${b.email}\n${b.area}`;
   navigator.clipboard.writeText(t).then(()=>toast("Summary copied to clipboard")).catch(()=>{
     const ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();
